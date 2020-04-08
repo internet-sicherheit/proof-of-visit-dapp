@@ -9,17 +9,15 @@ title Proof of Visit Dapp
 
 Person(person, "AppUser", "A User who uses the appliaction.")
 
-System_Boundary(client_app, "Sample System") {
-    System(app, "Client App", "An android application.")
-    Container(web3j, "Web3j Framework", "Web3j", "A Web3j Framework.")
+System_Boundary(client_app, "Android Application") {
+    System(client, "Client App", "An android application.")
+    Container(web3j_client, "Web3j Framework", "Web3j", "A Web3j Framework.")
 }
 
 Container(smart_contract, "SmartContract", "Solidity 0.5.0", "A SmartContract deployed on Bloxberg.")
-System(server, "Java Server")
 
 Rel(person, client_app, "uses")
-Rel(app, web3j, "implements")
-Rel(client_app, server, "ask server to transfer tokens")
-Rel(server, smart_contract, "transfer tokens")
-Rel(client_app, smart_contract, "show tokens")
+Rel(client, web3j_client, "implements")
+Rel(web3j_client, smart_contract, "show tokens")
+Rel(web3j_client, smart_contract, "transfer function call")
 @enduml
