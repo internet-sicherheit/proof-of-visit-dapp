@@ -14,16 +14,73 @@ contract POVToken is CreateLocation, ERC721 {
     
     
      function totalSupply() public view returns (uint) {
-       // return povtokens.length - 1;
+        return povtokens.length - 1;
     }
     
     
-    //Will maybe not be used at all because you can't send tokens to other users, but may be used for features e.g. for 10 Tokens you can get a coffee at the location
-     function  transfer(address requestaddress, uint256 _tokenId) external {
+    
+    
+    
+  
+     function ownerOf(uint256 _tokenID) external view returns (address owner){
          
-         //sets the owner of the tokenID to the requester
-        
-         
+         return tokenIndexToOwner[_tokenID];
+  
      }
+     
+  
+   function balanceOf(address _owner) public view returns (uint256 balance)
+   {
+       
+       return ownershipTokenCount[_owner];
+       
+   }
+   
+   
+   
+   function locationNameOfToken(uint256 _tokenID) public view returns (string locationname)
+   {
+    
+      return locations[tokenIndexToLocationIndex[_tokenID]].locationname;
+  
+   }
+    
+    
+    
+    
+    
+     // |1| Right now there is no plans to send or interchange tokens after the owner is declared. It's self-explanatory because a Token is a Proof of Visit, you can't give your "visit" to someone else
+     
+     //Events
+    event Transfer(address from, address to, uint256 tokenId);
+    event Approval(address owner, address approved, uint256 tokenId);
+     
+    //See |1|
+    function  transfer(address requestaddress, uint256 _tokenId) external {
+         
+        
+        emit Transfer(this, requestaddress, _tokenId);
+
+    }
+     
+    //See |1|
+    function approve(address _to, uint256 _tokenId) external
+    {
+        
+       
+        emit Approval(msg.sender, _to, _tokenId);
+    }
+     
+    //See |1|
+    function transferFrom(address _from, address _to, uint256 _tokenId) external
+    {
+          
+       
+        emit Transfer(_from, _to, _tokenId);
+          
+    }
+    
+    
+   
 
 }

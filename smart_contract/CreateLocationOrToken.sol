@@ -59,6 +59,9 @@ contract CreateLocation is Manager{
      
         //sets requestsaddress as owner of token
         tokenIndexToOwner[newTokenId] = _requestaddress;
+        
+        //ups the totalBalance of address
+        ownershipTokenCount[_requestaddress]++;
   
   
         return newTokenId;

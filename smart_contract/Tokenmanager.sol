@@ -43,6 +43,8 @@ pragma solidity ^0.4.0;
    //this mapping represents which location an token has
     mapping(uint256 => uint256) public tokenIndexToLocationIndex;
     
+    //used to see the total tokens of an address (needed for ERC721)
+    mapping (address => uint256) ownershipTokenCount;
     
 
 }
