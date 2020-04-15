@@ -1,6 +1,6 @@
 pragma solidity ^0.4.0;
 
-    contract Tokenmanager{
+    contract Manager{
 
     //Struct for a Location that wants to give out POV Tokens
     struct Location{
@@ -9,6 +9,7 @@ pragma solidity ^0.4.0;
         string tokensymbol;
         string locationname;
         address locationaddress;
+        uint256 locationID;
         
     }
     
@@ -18,26 +19,29 @@ pragma solidity ^0.4.0;
        
         string locationname;
         address locationaddress;
+        uint256 locationID;
   
     }
 
 
     //Storage for all Locations 
-    Location[] locations;
+     Location[] locations ;
     
-    //Storage for all tokens in existence,
-    PovToken [] povtokens;
+    //Storage for all tokens from all locations in existence
+     PovToken [] povtokens;
 
 
-    //hab ich noch nicht ganz gecheckt, quasi ne hashmap
+   
+   //hashmaps
       
     //This mapping represents which Index of the povtokens map is owned by who (address)
     //ID is basically the same as the INDEX!! (as far as i understand)
     mapping (uint256 => address) public tokenIndexToOwner;
     
 
-    //unused atm
-    mapping(uint32 => address) public locationIndexToOwner;
+   
+   //this mapping represents which location an token has
+    mapping(uint256 => uint256) public tokenIndexToLocationIndex;
     
     
 
