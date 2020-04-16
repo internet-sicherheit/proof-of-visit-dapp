@@ -2,12 +2,12 @@ pragma solidity ^0.4.0;
 
 import "browser/ERC721.sol";
 
-import "browser/CreateLocationOrToken.sol";
+
 
 
 //needs to implement all Functions of ERC721, alot of functions missing right now
 
-contract POVToken is CreateLocation, ERC721 {
+contract POVToken is TokenManager, ERC721 {
     
     string public name = "ProofOfVisit Token";
     string public symbol = "POV-T";
