@@ -1,4 +1,4 @@
-pragma solidity ^0.4.0;
+pragma solidity ^0.5.16;
 
     contract TokenManager{
         
@@ -55,7 +55,7 @@ pragma solidity ^0.4.0;
 
     //creates a new location that can give out tokens to visitors, e.g. "IFIS-Token, Institut für Internetsicherheit"
     
-    function createLocation(string _tokenname, string _tokensymbol, string _locationname, address _locationWalletAddress ) external returns (uint256)  {
+    function createLocation(string calldata _tokenname, string calldata _tokensymbol, string calldata _locationname, address _locationWalletAddress ) external returns (uint256)  {
       
       //id of the next open Index of LocationArray
       uint256 _newLocationID = locations.length; 
@@ -110,20 +110,12 @@ pragma solidity ^0.4.0;
         
         //ups the totalBalance of address
         ownershipTokenCount[_requestaddress]++;
-  
-  
-      
-  
-  
-}
-
-
 
 }
 
 
 
-
+}
 
 
 
@@ -151,26 +143,28 @@ contract ERC721 {
 }
 
 
-//needs to implement all Functions of ERC721, alot of functions missing right now
 
-contract POVToken is TokenManager {
+
+contract POVToken is TokenManager, ERC721 {
     
-    string public name = "ProofOfVisit Token";
-    string public symbol = "POV-T";
+   
     
  
     
      function totalSupply() public view returns (uint) {
-        return povtokens.length - 1;
+        return povtokens.length ;
     }
     
     
     
     
        function totalSupplyLocations() public view returns (uint) {
-        return locations.length - 1;
+        return locations.length ;
     }
     
+  
+    
+ 
     
     
   
@@ -189,8 +183,9 @@ contract POVToken is TokenManager {
    }
    
    
-   
-   function locationNameOfToken(uint256 _tokenID) public view returns (string locationname)
+   //gives the name of the location from given token
+   function locationNameOfToken(uint256 _tokenID) public view returns (string memory 
+locationname)
    {
     
       return locations[tokenIndexToLocationIndex[_tokenID]].locationname;
@@ -211,7 +206,7 @@ contract POVToken is TokenManager {
     function  transfer(address requestaddress, uint256 _tokenId) external {
          
         
-        emit Transfer(this, requestaddress, _tokenId);
+        emit Transfer(msg.sender, requestaddress, _tokenId);
 
     }
      
