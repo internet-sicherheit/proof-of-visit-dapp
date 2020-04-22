@@ -16,7 +16,7 @@ By transferring a token, the admin DAPP calls a function of the smart contract, 
 
 ### C4-Concept-Model
 
-This image reperesents the project concept as a c4 model:
+This image reperesents the project concept as a c4 model:</br>
 ![alt text](https://raw.githubusercontent.com/internet-sicherheit/proof-of-visit-dapp/master/documentation/c4model/client_based/c4mode_client_based/Proof%20of%20Visit%20Dapp.png)
 
 
