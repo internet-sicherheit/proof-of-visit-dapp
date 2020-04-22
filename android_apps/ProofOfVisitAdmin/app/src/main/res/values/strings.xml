@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">ProofOfVisitAdmin</string>
+    <string name="text_information">Information</string>
+    <string name="text_faucet_bergs">Faucet Bergs</string>
+    <string name="text_location_settings">Location Settings</string>
+    <string name="text_wallet_import">Import Wallet</string>
+    <string name="text_scan_qrcode">Scan QR-Code</string>
+
+    <string name="text_transaction">Really want to start the transaction for address:\n\n</string>
+    <string name="btn_continue">Continue</string>
+    <string name="btn_abort">Abort</string>
+</resources>

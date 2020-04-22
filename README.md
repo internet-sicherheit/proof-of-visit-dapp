@@ -23,9 +23,7 @@ This image reperesents the project concept as a c4 model:
 ## Used programming languages
 
 ### Smart Contract
-
 To create the smart contract, the language solidity will be used. This decision was made because solidity is the most documented language and has the most tooling/support for samrt contracts. Also by using solidity much more people can understand this project, because by the common usage of this language.
 
 ### Application
-
 To use the applications it is nessescary to be mobile. Therefore we decided to use android. Android delivers a open operating system and supports developers to create thier own applicaitons. Furthermore android is used on the most mobile devices arround the world.
