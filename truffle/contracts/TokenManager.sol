@@ -50,7 +50,18 @@ pragma solidity ^0.5.16;
     //used to see the total tokens of an address (needed for ERC721)
     mapping (address => uint256) public ownershipTokenCount;
     
-    mapping(uint256 => string) locationIDtoLocationName;
+    mapping(uint256 => string) public locationIDtoLocationName;
+
+ function getLocationNameFromId(uint256 _id) public view returns  (string memory)
+    {
+        return locationIDtoLocationName[_id];
+    }
+
+  function setLocationNameForId(uint256 _id, string memory _locationname) public 
+    {
+        locationIDtoLocationName[_id] = _locationname;
+    }
+    
     
 
     //creates a new location that can give out tokens to visitors, e.g. "IFIS-Token, Institut für Internetsicherheit"
@@ -228,10 +239,10 @@ locationname)
     }
     
     
-    function supportsInterface(bytes4 _interfaceID) external view returns (bool){
+  //  function supportsInterface(bytes4 _interfaceID) external view returns (bool){
         
-        return true;
-    }
+ //       return true;
+ //   }
     
     
    
