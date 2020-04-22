@@ -29,7 +29,7 @@ The user DApp can now get the stored data by calling only reading functions of t
 ### C4-Concept-Model
 
 This image reperesents the project concept as a c4 model:  
-![alt text](https://raw.githubusercontent.com/internet-sicherheit/proof-of-visit-dapp/master/documentation/c4model/client_based/c4mode_client_based/Proof%20of%20Visit%20Dapp.png)
+![alt text](https://raw.githubusercontent.com/internet-sicherheit/proof-of-visit-dapp/master/documentation/c4_model/c4_model/Proof%20of%20Visit%20Dapp.png)
 
 
 ## Used programming languages
