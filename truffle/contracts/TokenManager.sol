@@ -21,10 +21,13 @@ pragma solidity ^0.5.16;
     //Struct data for all POV-Tokens in existence
     struct PovToken{
        
+	  
         string locationname;
         address locationaddress;
         uint256 locationID;
   
+	
+
     }
 
 
@@ -62,6 +65,24 @@ pragma solidity ^0.5.16;
         locationIDtoLocationName[_id] = _locationname;
     }
     
+
+//just for testing can be removed later
+function addToken(string memory _locationname, address _locationaddress, uint256 _locationId) public
+{
+
+
+        PovToken memory _newpovtoken = PovToken({
+       
+            locationname: _locationname,
+            locationaddress: _locationaddress,
+            locationID: _locationId
+            
+        });
+
+povtokens.push(_newpovtoken);
+
+}
+
     
 
     //creates a new location that can give out tokens to visitors, e.g. "IFIS-Token, Institut für Internetsicherheit"
@@ -91,6 +112,9 @@ pragma solidity ^0.5.16;
         return _newLocationID;
       
   }
+
+
+
   
   
   
@@ -239,10 +263,10 @@ locationname)
     }
     
     
-  //  function supportsInterface(bytes4 _interfaceID) external view returns (bool){
+   function supportsInterface(bytes4 _interfaceID) external view returns (bool){
         
- //       return true;
- //   }
+       return true;
+   }
     
     
    

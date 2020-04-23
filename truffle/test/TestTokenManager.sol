@@ -8,31 +8,35 @@ import "..//contracts/TokenManager.sol";
 
 contract TestTokenManager{
 
+
+	 POVToken povtoken;
     string _tokenname;
     string _tokensymbol;
     string _locationname;
     address _locationWalletAddress ;
+	uint256 _locationId;
 
     
-function beforeAll() public 
+
+
+
+function testTotalSupply() public
 {
+
+povtoken = new POVToken();
+
+	_locationname = "testname";
+    	_locationWalletAddress = 0x793f3338d13D4DB8AC607Efa9101012f3cb3bE5A;
+     	_locationId = 0;
+    
+uint256 expected = 1;
+
+
+povtoken.addToken(_locationname, _locationWalletAddress, _locationId);
+
+  Assert.equal(povtoken.totalSupply(), expected, "It should be 1 token in array ");
+
+ 
 }
 
-function beforeEach() public {
-
-    	_tokenname = "TestName";
-    	_tokensymbol = "TS";
-    	_locationname = "TestLocation";
-    	_locationWalletAddress = 0x30f186b022B80feFf60208c0749a177AF17aCF0e;
-  
-   
-} 
-
-    function testCreateLocation() public {
-        TokenManager tokenmanager = TokenManager(DeployedAddresses.TokenManager());
-	 tokenmanager.setLocationNameForId(0,"test"); //first field id 0
-    
-    }
-    
-    
 }
