@@ -1,29 +1,31 @@
 package net.ifis.proofofvisitclient.fragments;
 
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.zxing.WriterException;
 
 import net.ifis.proofofvisitclient.R;
+import net.ifis.proofofvisitclient.activities.MainActivity;
+import net.ifis.proofofvisitclient.constants.Constant;
 
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
 
-import static android.content.Context.WINDOW_SERVICE;
-import static androidx.core.content.ContextCompat.getSystemService;
+import static net.ifis.proofofvisitclient.activities.MainActivity.sharedPref;
 
 public class GenerateQRFragment extends Fragment {
 
+    TextView infoTextTv;
     ImageView qrCodeImageView;
     QRGEncoder qrgEncoder;
     Bitmap bitmap;
@@ -39,14 +41,27 @@ public class GenerateQRFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         qrCodeImageView = view.findViewById(R.id.qr_code_image_view);
+        infoTextTv = view.findViewById(R.id.infoTextTv);
 
-        qrgEncoder = new QRGEncoder("hallo", null, QRGContents.Type.TEXT, 800);
-        try {
-            bitmap = qrgEncoder.encodeAsBitmap();
-            qrCodeImageView.setImageBitmap(bitmap);
-        } catch(WriterException we) {
+        if(sharedPref.getString(Constant.SHAREDPREFERENCES_WALLET_ADDRESS, Constant.SHAREDPREFERENCES_DEFAULT_VALUE).equals(Constant.SHAREDPREFERENCES_DEFAULT_VALUE)) {
+            infoTextTv.setVisibility(View.VISIBLE);
+            qrCodeImageView.setVisibility(View.INVISIBLE);
+        } else {
+            infoTextTv.setVisibility(View.INVISIBLE);
+            qrCodeImageView.setVisibility(View.VISIBLE);
 
+            String data = sharedPref.getString(Constant.SHAREDPREFERENCES_WALLET_ADDRESS, Constant.SHAREDPREFERENCES_DEFAULT_VALUE);
+
+            qrgEncoder = new QRGEncoder(data, null, QRGContents.Type.TEXT, 800);
+            try {
+                bitmap = qrgEncoder.encodeAsBitmap();
+                qrCodeImageView.setImageBitmap(bitmap);
+            } catch(WriterException we) {
+                we.printStackTrace();
+            }
         }
+
     }
 }

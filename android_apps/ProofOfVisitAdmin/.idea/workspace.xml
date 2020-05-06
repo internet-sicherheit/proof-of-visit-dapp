@@ -13,6 +13,16 @@
   <component name="ChangeListManager">
     <list default="true" id="ce6a164b-45d0-4de5-8e7a-559109afa130" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ProofOfVisitClient/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/../ProofOfVisitClient/.idea/caches/build_file_checksums.ser" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ProofOfVisitClient/.idea/libraries/Gradle__org_bouncycastle_bcprov_jdk15on_1_60_jar.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ProofOfVisitClient/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../ProofOfVisitClient/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ProofOfVisitClient/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ProofOfVisitClient/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ProofOfVisitClient/app/src/main/java/net/ifis/proofofvisitclient/activities/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ProofOfVisitClient/app/src/main/java/net/ifis/proofofvisitclient/activities/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ProofOfVisitClient/app/src/main/java/net/ifis/proofofvisitclient/fragments/GenerateQRFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ProofOfVisitClient/app/src/main/java/net/ifis/proofofvisitclient/fragments/GenerateQRFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ProofOfVisitClient/app/src/main/java/net/ifis/proofofvisitclient/fragments/WalletManagerFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ProofOfVisitClient/app/src/main/java/net/ifis/proofofvisitclient/fragments/WalletManagerFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ProofOfVisitClient/app/src/main/res/layout/fragment_generate_qr.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ProofOfVisitClient/app/src/main/res/layout/fragment_generate_qr.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ProofOfVisitClient/app/src/main/res/layout/fragment_wallet_manager.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ProofOfVisitClient/app/src/main/res/layout/fragment_wallet_manager.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ProofOfVisitClient/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ProofOfVisitClient/app/src/main/res/values/strings.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -20,7 +30,7 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="Pixel_XL_API_22" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="ce031713aba8a0f70c" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />

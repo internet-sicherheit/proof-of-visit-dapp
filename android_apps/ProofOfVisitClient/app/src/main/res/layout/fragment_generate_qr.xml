@@ -5,25 +5,25 @@
     android:id="@+id/fragment_generate_qr"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.TokenListFragment">
+    tools:context=".fragments.GenerateQRFragment">
 
     <ImageView
         android:id="@+id/qr_code_image_view"
         android:layout_width="300dp"
         android:layout_height="300dp"
-        app:layout_constraintBottom_toTopOf="@+id/textview_first"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textview_first"
+        android:id="@+id/infoTextTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="generate qr-code"
+        android:text="@string/tv_info_text_no_wallet_selected"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/qr_code_image_view" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

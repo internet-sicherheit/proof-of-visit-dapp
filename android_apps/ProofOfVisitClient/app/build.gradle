@@ -42,4 +42,7 @@ dependencies {
     // My dependencies
     implementation 'org.web3j:core:4.2.0-android'
     implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.3'
+    //noinspection GradleCompatible
+/*    implementation 'com.madgag.spongycastle:prov:1.54.0.0'
+    implementation 'com.madgag.spongycastle:pkix:1.54.0.0'*/
 }
