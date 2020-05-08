@@ -48,13 +48,15 @@ povtoken.requestToken(_locationId, _locationWalletAddress,_requestaddress);
 
 
 }
-uint256 expected = 99;
+uint256 expected1 = 1;
+uint256 expected2 = 0;
 
 function testTotalSupplyLocations() public {
 
 povtoken.createLocation(_tokenname, _tokensymbol, _locationname, _locationWalletAddress);
 
- Assert.equal(povtoken.totalSupply(), expected, "It should be 1 location in array ");
+ Assert.equal(povtoken.totalSupplyLocations(), expected1, "It should be 1 location in array ");
+ Assert.notEqual(povtoken.totalSupplyLocations(), expected2, "there are no locations but there should be at least 1");
 
 }
 
