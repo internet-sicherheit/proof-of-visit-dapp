@@ -37,6 +37,7 @@ function testTotalSupply() public
 uint256 expected = 1;
 
 
+
 povtoken.createLocation(_tokenname, _tokensymbol, _locationname, _locationWalletAddress);
 povtoken.requestToken(_locationId, _locationWalletAddress,_requestaddress);
 
@@ -48,6 +49,8 @@ povtoken.requestToken(_locationId, _locationWalletAddress,_requestaddress);
 
 
 }
+
+
 uint256 expected1 = 1;
 uint256 expected2 = 0;
 
@@ -74,5 +77,23 @@ Assert.equal(povtoken.ownerOf(0), expectedaddress, "?");
 
 
 }
+
+function testBalanceOf() public
+{
+
+uint256  expected= 3;
+
+	povtoken.createLocation(_tokenname, _tokensymbol, _locationname, _locationWalletAddress);
+povtoken.requestToken(_locationId, _locationWalletAddress,_requestaddress);
+povtoken.requestToken(_locationId, _locationWalletAddress,_requestaddress);
+povtoken.requestToken(_locationId, _locationWalletAddress,_requestaddress);
+
+Assert.equal(povtoken.balanceOf(_requestaddress), expected, "Should be 3 Tokens ");
+
+
+
+}
+
+
 
 }
