@@ -18,6 +18,16 @@ contract TestTokenManager{
 address _requestaddress;
 
 
+  struct Location{
+        
+        string tokenname;
+        string tokensymbol;
+        string locationname;
+        address locationaddress;
+        uint256 locationID;
+        
+    }
+
 
 function beforeEach() public
 {
@@ -31,6 +41,28 @@ function beforeEach() public
 	_requestaddress = 0x19d7a2a11b6957912AC232a10a02B5FdD0df9A17;
 
 }
+
+
+
+
+//TypeError: Type struct TokenManager.Location memory[] memory is not implicitly convertible to expected type struct TestTokenManager.Location memory[] memory.
+//Location[] memory locations = povtoken.getLocations();
+//^---------------------------------------------------^
+
+
+function testCreateLocation() public
+{
+
+povtoken.createLocation(_tokenname, _tokensymbol, _locationname, _locationWalletAddress);
+
+Location[] memory locations = povtoken.getLocations();
+
+
+
+
+
+}
+
 
 function testTotalSupply() public
 {
