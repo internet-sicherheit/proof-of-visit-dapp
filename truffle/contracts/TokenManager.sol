@@ -1,5 +1,5 @@
 pragma solidity ^0.5.16;
-
+pragma experimental ABIEncoderV2;
     contract TokenManager{
         
         constructor() public {
@@ -55,6 +55,9 @@ pragma solidity ^0.5.16;
     
     mapping(uint256 => string) public locationIDtoLocationName;
 
+
+
+//getters and setters for testing
  function getLocationNameFromId(uint256 _id) public view returns  (string memory)
     {
         return locationIDtoLocationName[_id];
@@ -64,6 +67,17 @@ pragma solidity ^0.5.16;
     {
         locationIDtoLocationName[_id] = _locationname;
     }
+   
+   function getLocations() public view returns (Location[] memory)
+   
+   {
+   	return locations;
+   }
+   
+   function returnOneDigitNumers() public pure returns (uint[9] memory)
+   {
+   return [uint(1),2,3,4,5,6,7,8,9];
+   }
     
 
 //just for testing can be removed later
