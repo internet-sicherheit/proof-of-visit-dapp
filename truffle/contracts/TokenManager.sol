@@ -119,8 +119,11 @@ povtokens.push(_newpovtoken);
   
   
     //Generates a Token for a Location and sets the requestsaddress as the owner, gets called when Visitor wants a Token from Admin
-    //returns the Id of the token for the requestsaddress
+  
     //locationaddress is currently unused but may be used in later implementations
+    //locationId and locationaddress is given by admin
+    
+    //the function should return the tokenID to Admin to give it to requester. Right know i don't 		//know how to do that
 
     function requestToken(uint256 _locationID, address _locationaddress, address _requestaddress) external{
     

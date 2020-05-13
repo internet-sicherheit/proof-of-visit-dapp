@@ -23,9 +23,10 @@ function beforeEach() public
 {
 	_locationname = "testname";
     	_locationWalletAddress = 0x793f3338d13D4DB8AC607Efa9101012f3cb3bE5A;
-     	_locationId = 0;
-	 _tokenname = "testtoken";
+     	
+	_tokenname = "testtoken";
 	_tokensymbol = "tSY";
+	
 	povtoken = new POVToken();
 	_requestaddress = 0x19d7a2a11b6957912AC232a10a02B5FdD0df9A17;
 
@@ -39,7 +40,7 @@ uint256 expected = 1;
 
 
 povtoken.createLocation(_tokenname, _tokensymbol, _locationname, _locationWalletAddress);
-povtoken.requestToken(_locationId, _locationWalletAddress,_requestaddress);
+povtoken.requestToken(0, _locationWalletAddress,_requestaddress);
 
 
 //or
@@ -94,6 +95,41 @@ Assert.equal(povtoken.balanceOf(_requestaddress), expected, "Should be 3 Tokens 
 
 }
 
+function testLocationNameOfToken() public
+{
+povtoken.createLocation(_tokenname, _tokensymbol, _locationname, _locationWalletAddress);
+povtoken.requestToken(0, _locationWalletAddress,_requestaddress);
+povtoken.requestToken(0, _locationWalletAddress,_requestaddress);
+
+
+
+ string memory expected = _locationname;
+
+Assert.equal(povtoken.locationNameOfToken(0), expected, "failed");
+Assert.equal(povtoken.locationNameOfToken(1), expected, "failed");
+
+
+
+
+_locationname = "testname2";
+
+
+
+
+povtoken.createLocation(_tokenname, _tokensymbol, _locationname, _locationWalletAddress);
+povtoken.requestToken(1, _locationWalletAddress,_requestaddress);
+
+
+expected = "testname2";
+
+Assert.notEqual(povtoken.locationNameOfToken(0), expected, "failed");
+Assert.notEqual(povtoken.locationNameOfToken(1), expected, "failed");
+Assert.equal(povtoken.locationNameOfToken(2), expected, "failed");
+
+
+
+
+}
 
 
 }
