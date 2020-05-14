@@ -50,34 +50,39 @@ contract TokenManager {
         return locationIDtoLocationName[_id];
     }
 
+     
+    function getTokenNameFromId(uint256 _id)
+        public
+        view
+        returns (string memory)
+    {
+        return locations[_id].tokenname;
+    }
+
+    
+    function getTokenSymbolFromId(uint256 _id)
+        public
+        view
+        returns (string memory)
+    {
+        return locations[_id].tokensymbol;
+    }
+
+    function getLocationAddressFromId(uint256 _id)
+        public
+        view
+        returns (address)
+    {
+        return locations[_id].locationaddress;
+    }
+
     function setLocationNameForId(uint256 _id, string memory _locationname)
         public
     {
         locationIDtoLocationName[_id] = _locationname;
     }
 
-    function getLocations() public view returns (Location[] memory) {
-        return locations;
-    }
 
-    function returnOneDigitNumers() public pure returns (uint256[9] memory) {
-        return [uint256(1), 2, 3, 4, 5, 6, 7, 8, 9];
-    }
-
-    //just for testing can be removed later
-    function addToken(
-        string memory _locationname,
-        address _locationaddress,
-        uint256 _locationId
-    ) public {
-        PovToken memory _newpovtoken = PovToken({
-            locationname: _locationname,
-            locationaddress: _locationaddress,
-            locationID: _locationId
-        });
-
-        povtokens.push(_newpovtoken);
-    }
 
     //creates a new location that can give out tokens to visitors, e.g. "IFIS-Token, Institut für Internetsicherheit"
 
@@ -103,7 +108,7 @@ contract TokenManager {
 
         locationIDtoLocationName[_newLocationID] = _locationname;
 
-        //returns the locationID for the creator of the location
+        //returns the locationID for the creator of the location  ???
         return _newLocationID;
     }
 
@@ -112,7 +117,7 @@ contract TokenManager {
     //locationaddress is currently unused but may be used in later implementations
     //locationId and locationaddress is given by admin
 
-    //the function should return the tokenID to Admin to give it to requester. Right know i don't 		//know how to do that
+    //the function should return the tokenID to Admin to give it to requester. Right know i don't know how to do that
 
     function requestToken(
         uint256 _locationID,
