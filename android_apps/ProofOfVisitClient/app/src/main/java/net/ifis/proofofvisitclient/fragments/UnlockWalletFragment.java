@@ -13,11 +13,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import com.kenai.jffi.Main;
-
 import net.ifis.proofofvisitclient.R;
 import net.ifis.proofofvisitclient.activities.MainActivity;
-import net.ifis.proofofvisitclient.constants.Constant;
+import net.ifis.proofofvisitclient.constants.SharedPref;
 
 import org.web3j.crypto.CipherException;
 
@@ -44,7 +42,7 @@ public class UnlockWalletFragment extends Fragment {
 
         findViewByIds(view);
 
-        walletAddressTv.setText(MainActivity.sharedPref.getString(Constant.SHAREDPREFERENCES_WALLET_ADDRESS, Constant.SHAREDPREFERENCES_DEFAULT_VALUE));
+        walletAddressTv.setText(MainActivity.sharedPref.getString(SharedPref.SHAREDPREFERENCES_WALLET_ADDRESS));
 
         tryAgainBtn.setVisibility(View.INVISIBLE);
 
@@ -52,7 +50,7 @@ public class UnlockWalletFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                String walletAddress = MainActivity.sharedPref.getString(Constant.SHAREDPREFERENCES_WALLET_ADDRESS, Constant.SHAREDPREFERENCES_DEFAULT_VALUE);
+                String walletAddress = MainActivity.sharedPref.getString(SharedPref.SHAREDPREFERENCES_WALLET_ADDRESS);
                 String password = passwordInput.getText().toString();
 
                 try {

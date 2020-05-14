@@ -14,7 +14,7 @@ import androidx.fragment.app.FragmentManager;
 
 import net.ifis.proofofvisitclient.R;
 import net.ifis.proofofvisitclient.activities.MainActivity;
-import net.ifis.proofofvisitclient.constants.Constant;
+import net.ifis.proofofvisitclient.constants.SharedPref;
 
 public class DeleteWalletFragment extends Fragment {
 
@@ -36,23 +36,19 @@ public class DeleteWalletFragment extends Fragment {
 
         findViewByIds(view);
 
-        String infoText = "Delete wallet with address " + MainActivity.sharedPref.getString(Constant.SHAREDPREFERENCES_WALLET_ADDRESS, Constant.SHAREDPREFERENCES_DEFAULT_VALUE) + " ?";
+        String infoText = "Delete wallet with address " + MainActivity.sharedPref.getString(SharedPref.SHAREDPREFERENCES_WALLET_ADDRESS) + " ?";
         infoTextTV.setText(infoText);
 
         yesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainActivity.walletManager.deleteWallet(MainActivity.sharedPref.getString(Constant.SHAREDPREFERENCES_WALLET_ADDRESS, Constant.SHAREDPREFERENCES_DEFAULT_VALUE));
+                MainActivity.walletManager.deleteWallet(MainActivity.sharedPref.getString(SharedPref.SHAREDPREFERENCES_WALLET_ADDRESS));
 
                 if(MainActivity.walletManager.isDirectoryEmpty()) {
-                    SharedPreferences.Editor editor = MainActivity.sharedPref.edit();
-                    editor.putString(Constant.SHAREDPREFERENCES_WALLET_ADDRESS, Constant.SHAREDPREFERENCES_DEFAULT_VALUE);
-                    editor.commit();
+                    MainActivity.sharedPref.add(SharedPref.SHAREDPREFERENCES_WALLET_ADDRESS, SharedPref.SHAREDPREFERENCES_DEFAULT_VALUE);
                 } else {
                     String selectedWallet = MainActivity.walletManager.getWalletNames()[0];
-                    SharedPreferences.Editor editor = MainActivity.sharedPref.edit();
-                    editor.putString(Constant.SHAREDPREFERENCES_WALLET_ADDRESS, selectedWallet);
-                    editor.commit();
+                    MainActivity.sharedPref.add(SharedPref.SHAREDPREFERENCES_WALLET_ADDRESS, selectedWallet);
                 }
 
                 WalletManagerFragment walletManagerFragment = new WalletManagerFragment();

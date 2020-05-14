@@ -8,26 +8,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 
-import android.os.Environment;
 import android.util.Log;
 import android.view.MenuItem;
 
 import net.ifis.proofofvisitclient.R;
-import net.ifis.proofofvisitclient.constants.Constant;
+import net.ifis.proofofvisitclient.constants.SharedPref;
 import net.ifis.proofofvisitclient.fragments.GenerateQRFragment;
 import net.ifis.proofofvisitclient.fragments.TokenListFragment;
 import net.ifis.proofofvisitclient.fragments.WalletManagerFragment;
 import net.ifis.proofofvisitclient.model.WalletManager;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.web3j.crypto.Wallet;
 
 import java.security.Provider;
 import java.security.Security;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static SharedPreferences sharedPref;
+    public static SharedPref sharedPref;
 
     public static WalletManager walletManager;
 
@@ -42,16 +40,11 @@ public class MainActivity extends AppCompatActivity {
 
         setupBouncyCastle();
 
-        sharedPref = getSharedPreferences(Constant.SHAREDPREFERENCES_FILENAME, Context.MODE_PRIVATE);
+        sharedPref = new SharedPref(getSharedPreferences(SharedPref.SHAREDPREFERENCES_FILENAME, Context.MODE_PRIVATE));
+
         fragmentManager = getSupportFragmentManager();
 
         walletManager = new WalletManager(getApplicationContext());
-
-        if(walletManager.isDirectoryEmpty()) {
-            SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putString(Constant.SHAREDPREFERENCES_WALLET_ADDRESS, Constant.SHAREDPREFERENCES_DEFAULT_VALUE);
-            editor.commit();
-        }
 
         loadTokenViewListFragment();
     }

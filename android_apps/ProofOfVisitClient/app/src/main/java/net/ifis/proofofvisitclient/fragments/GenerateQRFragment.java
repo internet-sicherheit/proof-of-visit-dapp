@@ -1,6 +1,5 @@
 package net.ifis.proofofvisitclient.fragments;
 
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,8 +14,7 @@ import androidx.fragment.app.Fragment;
 import com.google.zxing.WriterException;
 
 import net.ifis.proofofvisitclient.R;
-import net.ifis.proofofvisitclient.activities.MainActivity;
-import net.ifis.proofofvisitclient.constants.Constant;
+import net.ifis.proofofvisitclient.constants.SharedPref;
 
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
@@ -45,14 +43,14 @@ public class GenerateQRFragment extends Fragment {
         qrCodeImageView = view.findViewById(R.id.qr_code_image_view);
         infoTextTv = view.findViewById(R.id.infoTextTv);
 
-        if(sharedPref.getString(Constant.SHAREDPREFERENCES_WALLET_ADDRESS, Constant.SHAREDPREFERENCES_DEFAULT_VALUE).equals(Constant.SHAREDPREFERENCES_DEFAULT_VALUE)) {
+        if(sharedPref.getString(SharedPref.SHAREDPREFERENCES_WALLET_ADDRESS).equals(SharedPref.SHAREDPREFERENCES_DEFAULT_VALUE)) {
             infoTextTv.setVisibility(View.VISIBLE);
             qrCodeImageView.setVisibility(View.INVISIBLE);
         } else {
             infoTextTv.setVisibility(View.INVISIBLE);
             qrCodeImageView.setVisibility(View.VISIBLE);
 
-            String data = sharedPref.getString(Constant.SHAREDPREFERENCES_WALLET_ADDRESS, Constant.SHAREDPREFERENCES_DEFAULT_VALUE);
+            String data = sharedPref.getString(SharedPref.SHAREDPREFERENCES_WALLET_ADDRESS);
 
             qrgEncoder = new QRGEncoder(data, null, QRGContents.Type.TEXT, 800);
             try {

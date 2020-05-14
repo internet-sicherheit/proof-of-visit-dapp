@@ -15,7 +15,7 @@ import androidx.fragment.app.FragmentManager;
 
 import net.ifis.proofofvisitclient.R;
 import net.ifis.proofofvisitclient.activities.MainActivity;
-import net.ifis.proofofvisitclient.constants.Constant;
+import net.ifis.proofofvisitclient.constants.SharedPref;
 
 public class AddWalletFragment extends Fragment {
 
@@ -50,10 +50,9 @@ public class AddWalletFragment extends Fragment {
                     String password = passwordFirstInput.getText().toString();
 
                     String walletFileName = MainActivity.walletManager.createWallet(password);
-                    SharedPreferences.Editor editor = MainActivity.sharedPref.edit();
-                    editor.putString(Constant.SHAREDPREFERENCES_WALLET_ADDRESS, walletFileName);
-                    editor.putString(Constant.SHAREDPREFERENCES_WALLET_PASSWORD, MainActivity.walletManager.encrypt(password));
-                    editor.commit();
+
+                    MainActivity.sharedPref.add(SharedPref.SHAREDPREFERENCES_WALLET_ADDRESS, walletFileName);
+                    MainActivity.sharedPref.add(SharedPref.SHAREDPREFERENCES_WALLET_PASSWORD, MainActivity.walletManager.encrypt(password));
 
                     WalletManagerFragment walletManagerFragment = new WalletManagerFragment();
                     FragmentManager fragmentManager = getParentFragmentManager();

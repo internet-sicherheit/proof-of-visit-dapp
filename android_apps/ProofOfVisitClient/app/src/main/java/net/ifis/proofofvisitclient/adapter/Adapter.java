@@ -10,19 +10,13 @@ import android.widget.Toast;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.kenai.jffi.Main;
-
 import net.ifis.proofofvisitclient.R;
 import net.ifis.proofofvisitclient.activities.MainActivity;
-import net.ifis.proofofvisitclient.constants.Constant;
-import net.ifis.proofofvisitclient.constants.Mode;
+import net.ifis.proofofvisitclient.constants.SharedPref;
+import net.ifis.proofofvisitclient.constants.AdapterMode;
 import net.ifis.proofofvisitclient.fragments.UnlockWalletFragment;
 import net.ifis.proofofvisitclient.fragments.WalletManagerFragment;
-import net.ifis.proofofvisitclient.model.WalletManager;
 
-import org.web3j.crypto.Wallet;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import static net.ifis.proofofvisitclient.activities.MainActivity.sharedPref;
@@ -50,7 +44,7 @@ public class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         RecyclerView.ViewHolder viewHolder = null;
         View itemView;
 
-        if(this.adapterMode.equals(Mode.WALLETMANGER)) {
+        if(this.adapterMode.equals(AdapterMode.WALLETMANGER)) {
             itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_wallet_manager, null);
             viewHolder = new WalletManagerView(itemView);
         }
@@ -61,14 +55,14 @@ public class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int i) {
 
-        if(this.adapterMode.equals(Mode.WALLETMANGER)) {
+        if(this.adapterMode.equals(AdapterMode.WALLETMANGER)) {
 
             WalletManagerView walletManagerView = (WalletManagerView) viewHolder;
 
             String walletName = WalletManagerFragment.walletManager.getWalletNames()[i];
                 walletManagerView.getWalletAddressTv().setText(walletName);
 
-                if(sharedPref.getString(Constant.SHAREDPREFERENCES_WALLET_ADDRESS, Constant.SHAREDPREFERENCES_DEFAULT_VALUE).equals(walletName)) {
+                if(sharedPref.getString(SharedPref.SHAREDPREFERENCES_WALLET_ADDRESS).equals(walletName)) {
                     walletManagerView.getCheckBoxIv().setVisibility(View.VISIBLE);
                 }
 
@@ -79,9 +73,8 @@ public class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         setItemsInvisable();
                         walletManagerView.getCheckBoxIv().setVisibility(View.VISIBLE);
                         String selectedWalletAddress = walletManagerView.getWalletAddressTv().getText().toString();
-                        SharedPreferences.Editor editor = MainActivity.sharedPref.edit();
-                        editor.putString(Constant.SHAREDPREFERENCES_WALLET_ADDRESS, selectedWalletAddress);
-                        editor.commit();
+                        sharedPref.add(SharedPref.SHAREDPREFERENCES_WALLET_ADDRESS, selectedWalletAddress);
+
 
                         UnlockWalletFragment unlockWalletFragment = new UnlockWalletFragment();
                         FragmentManager fragmentManager = MainActivity.fragmentManager;
@@ -93,7 +86,7 @@ public class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 items.add(walletManagerView);
         }
 
-        if(this.adapterMode.equals(Mode.TOKENVIEW)) {
+        if(this.adapterMode.equals(AdapterMode.TOKENVIEW)) {
 
 
         }

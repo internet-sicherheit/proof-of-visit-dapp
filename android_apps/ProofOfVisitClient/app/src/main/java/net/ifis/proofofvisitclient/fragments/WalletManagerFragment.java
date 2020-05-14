@@ -1,6 +1,5 @@
 package net.ifis.proofofvisitclient.fragments;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,8 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import net.ifis.proofofvisitclient.R;
 import net.ifis.proofofvisitclient.activities.MainActivity;
 import net.ifis.proofofvisitclient.adapter.Adapter;
-import net.ifis.proofofvisitclient.constants.Constant;
-import net.ifis.proofofvisitclient.constants.Mode;
+import net.ifis.proofofvisitclient.constants.SharedPref;
+import net.ifis.proofofvisitclient.constants.AdapterMode;
 import net.ifis.proofofvisitclient.model.WalletManager;
 
 import static net.ifis.proofofvisitclient.activities.MainActivity.sharedPref;
@@ -52,7 +51,8 @@ public class WalletManagerFragment extends Fragment {
         findViewByIds(view);
         setUpRecyclerView(view);
 
-        Log.d("debug", "SharedPrefs: " + sharedPref.getString(Constant.SHAREDPREFERENCES_WALLET_ADDRESS, Constant.SHAREDPREFERENCES_DEFAULT_VALUE));
+        Log.d("debug", "SharedPrefs: " + sharedPref.getString(SharedPref.SHAREDPREFERENCES_WALLET_ADDRESS));
+
 
         walletManager = new WalletManager(getContext());
         walletManager.getWalletNames();
@@ -65,7 +65,7 @@ public class WalletManagerFragment extends Fragment {
             walletManagerTv.setVisibility(View.INVISIBLE);
         }
 
-        rvAdapter = new Adapter(getContext(), walletManager.getNumberOfWallets(), Mode.WALLETMANGER);
+        rvAdapter = new Adapter(getContext(), walletManager.getNumberOfWallets(), AdapterMode.WALLETMANGER);
         recyclerView.setAdapter(rvAdapter);
 
         plusImgBtn.setOnClickListener(new View.OnClickListener() {
@@ -100,7 +100,7 @@ public class WalletManagerFragment extends Fragment {
         walletManagerTv = view.findViewById(R.id.wallet_manager_tv);
         recyclerView = view.findViewById(R.id.recyclerView);
 
-        if(sharedPref.getString(Constant.SHAREDPREFERENCES_WALLET_ADDRESS, Constant.SHAREDPREFERENCES_DEFAULT_VALUE).equals(Constant.SHAREDPREFERENCES_DEFAULT_VALUE)) {
+        if(sharedPref.getString(SharedPref.SHAREDPREFERENCES_WALLET_ADDRESS).equals(SharedPref.SHAREDPREFERENCES_DEFAULT_VALUE)) {
             recyclerView.setVisibility(View.INVISIBLE);
         } else {
             walletManagerTv.setVisibility(View.INVISIBLE);
