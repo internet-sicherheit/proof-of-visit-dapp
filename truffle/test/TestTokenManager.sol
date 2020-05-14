@@ -18,16 +18,6 @@ contract TestTokenManager{
 address _requestaddress;
 
 
-  struct Location{
-        
-        string tokenname;
-        string tokensymbol;
-        string locationname;
-        address locationaddress;
-        uint256 locationID;
-        
-    }
-
 
 function beforeEach() public
 {
@@ -53,9 +43,9 @@ function beforeEach() public
 function testCreateLocation() public
 {
 
-povtoken.createLocation(_tokenname, _tokensymbol, _locationname, _locationWalletAddress);
+  povtoken.createLocation(_tokenname, _tokensymbol, _locationname, _locationWalletAddress);
 
-Location[] memory locations = povtoken.getLocations();
+  TokenManager.Location[] memory locations = povtoken.getLocations();
 
 
 
