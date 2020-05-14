@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Add</string>
+    <string name="btn_add">Add one</string>
+    <string name="lbl_add">clicked 0 times"</string>
+    <string name="btn_sum">get sum</string>
+    <string name="lbl_sum">Sum : 0</string>
+</resources>
