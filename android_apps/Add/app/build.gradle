@@ -46,4 +46,5 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'org.web3j:core:4.1.0-android'
     implementation 'com.android.support:multidex:1.0.3'
+    implementation 'org.slf4j:slf4j-nop:1.7.25'
 }
