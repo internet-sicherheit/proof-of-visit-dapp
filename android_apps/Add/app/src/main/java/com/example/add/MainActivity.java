@@ -1,6 +1,7 @@
 package com.example.add;
 
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -8,15 +9,21 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.web3j.crypto.CipherException;
 import org.web3j.crypto.Credentials;
 import org.web3j.crypto.ECKeyPair;
 import org.web3j.crypto.Keys;
 import org.web3j.crypto.Wallet;
 import org.web3j.crypto.WalletFile;
 import org.web3j.crypto.WalletUtils;
+import org.web3j.protocol.Web3j;
 
 import java.io.File;
+import java.io.IOException;
 import java.math.BigInteger;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -32,7 +39,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("HALLO1", "Hallo");
-
         Connector connector = (Connector) new Connector().execute();
         Log.d("HALLO2", "Hallo");
         // Values for the own gas provider
@@ -45,25 +51,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         try {
             Log.d("HALLO4", "Hallo");
-            String file = "C:\\Users\\Cennet\\Master\\ArbeitBlockchain\\DAPPS\\Wallets\\UTC--2020-04-15T11-41-09.546146800Z--40983af4978c7d83ea7d9f74e27dae2957183aaf.json";
-            // Load Wallet
-            Credentials credentials = WalletUtils.loadCredentials("Hallo1234", file);
+            //String file = "Users/Cennet/Master/ArbeitBlockchain/DAPPS/Wallets/UTC--2020-04-15T11-41-09.546146800Z--40983af4978c7d83ea7d9f74e27dae2957183aaf.json";
             Log.d("HALLO5", "Hallo");
+            // Load Wallet
+            //   File file = new File("Users/Cennet/Master/ArbeitBlockchain/DAPPS/Wallets/", "UTC--2020-04-15T11-41-09.546146800Z--40983af4978c7d83ea7d9f74e27dae2957183aaf.json");
+            Credentials credentials = WalletUtils.loadCredentials("Hallo1234", "R.raw.wallet");
+            Log.d("HALLO6", "Hallo");
             // Contract address in Bloxberg
             String contractAddress = "0x0cA8f2CAdC651e865be3da134dF7A3ebEA464B2E";
 
-            // Add addContract = Add.load(contractAddress, (Web3j) connector, credentials, ownGasProvider);
-            //  BigInteger value = addContract.a().send();
-            // } catch (IOException e) {
-            //   e.printStackTrace();
-            // } catch (CipherException e) {
-            //    e.printStackTrace();
+            Add addContract = Add.load(contractAddress, (Web3j) connector, credentials, ownGasProvider);
+            BigInteger value = addContract.a().send();
+            Log.d("A_VALUE", String.valueOf(value));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (CipherException e) {
+            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
-        // Log.d("A_VALUE", String.valueOf(value));
 
 
         super.onCreate(savedInstanceState);
@@ -98,15 +104,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public void createWallet() throws Exception {
-        Log.d("WALLET", "TEST");
-        ECKeyPair keyPair = Keys.createEcKeyPair();
-        WalletFile wallet = Wallet.createStandard("Hallo12345678", keyPair);
-
-
-        String fileName = WalletUtils.generateNewWalletFile("test1234", new File("C:\\Users\\Cennet\\Master\\ArbeitBlockchain\\DAPPS\\Wallets"), true);
-
-
-    }
 
 }
