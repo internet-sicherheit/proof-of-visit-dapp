@@ -11,14 +11,14 @@ contract TokenManager {
         string tokensymbol;
         string locationname;
         address locationaddress;
-        uint256 locationID;
+    
     }
 
     //Struct data for all POV-Tokens in existence
     struct PovToken {
         string locationname;
         address locationaddress;
-        uint256 locationID;
+    
     }
 
     //Storage for all Locations
@@ -31,10 +31,15 @@ contract TokenManager {
 
     //This mapping represents which Index of the povtokens map is owned by who (address)
     //ID is basically the same as the INDEX!! (as far as i understand)
-    mapping(uint256 => address) public tokenIndexToOwner;
+    mapping(uint256 => address) public tokenIndexToOwnerAddress;
 
-    //this mapping represents which location an token has
-    mapping(uint256 => uint256) public tokenIndexToLocationIndex;
+    mapping(address => uint256) public ownerAddressToLocationIndex;
+
+  
+
+    
+
+    
 
     //used to see the total tokens of an address (needed for ERC721)
     mapping(address => uint256) public ownershipTokenCount;
@@ -42,12 +47,12 @@ contract TokenManager {
     mapping(uint256 => string) public locationIDtoLocationName;
 
     //getters and setters for testing
-    function getLocationNameFromId(uint256 _id)
+    function getLocationNameFromAddress(address _address)
         public
         view
         returns (string memory)
     {
-        return locationIDtoLocationName[_id];
+        return locations[ownerAddressToLocationIndex[_address]].locationname;
     }
 
      
@@ -68,14 +73,6 @@ contract TokenManager {
         return locations[_id].tokensymbol;
     }
 
-    function getLocationAddressFromId(uint256 _id)
-        public
-        view
-        returns (address)
-    {
-        return locations[_id].locationaddress;
-    }
-
     function setLocationNameForId(uint256 _id, string memory _locationname)
         public
     {
@@ -92,55 +89,57 @@ contract TokenManager {
         string calldata _locationname,
         address _locationWalletAddress
     ) external returns (uint256) {
-        //id of the next open Index of LocationArray
-        uint256 _newLocationID = locations.length;
+   
+
+
 
         Location memory _newLocation = Location({
             tokenname: _tokenname,
             tokensymbol: _tokensymbol,
             locationname: _locationname,
-            locationaddress: _locationWalletAddress,
-            locationID: _newLocationID
+            locationaddress: _locationWalletAddress
         });
 
         //adds the location to the location array
         locations.push(_newLocation);
+        ownerAddressToLocationIndex[_locationWalletAddress] = locations.length-1;
+        
 
-        locationIDtoLocationName[_newLocationID] = _locationname;
+        
 
-        //returns the locationID for the creator of the location  ???
-        return _newLocationID;
+      return 1;
     }
 
     //Generates a Token for a Location and sets the requestsaddress as the owner, gets called when Visitor wants a Token from Admin
 
-    //locationaddress is currently unused but may be used in later implementations
+  
     //locationId and locationaddress is given by admin
 
     //the function should return the tokenID to Admin to give it to requester. Right know i don't know how to do that
 
     function requestToken(
-        uint256 _locationID,
+       
         address _locationaddress,
         address _requestaddress
     ) external {
         PovToken memory _newpovtoken = PovToken({
-            locationname: locationIDtoLocationName[_locationID],
-            locationaddress: _locationaddress,
-            locationID: _locationID
+            locationname: locations[ownerAddressToLocationIndex[_locationaddress]].locationname,
+            locationaddress: _locationaddress
+            
         });
 
         //safes token to public manager array
         uint256 newTokenId = povtokens.push(_newpovtoken) - 1;
 
-        //safes this tokenindex to given locationindex (hashmap)
-        tokenIndexToLocationIndex[newTokenId] = _locationID;
+       
 
         //sets requestsaddress as owner of token
-        tokenIndexToOwner[newTokenId] = _requestaddress;
+        tokenIndexToOwnerAddress[newTokenId] = _requestaddress;
 
         //ups the totalBalance of address
         ownershipTokenCount[_requestaddress]++;
+
+
     }
 }
 
@@ -188,7 +187,7 @@ contract POVToken is TokenManager, ERC721 {
     }
 
     function ownerOf(uint256 _tokenID) external view returns (address owner) {
-        return tokenIndexToOwner[_tokenID];
+        return tokenIndexToOwnerAddress[_tokenID];
     }
 
     function balanceOf(address _owner) public view returns (uint256 balance) {
@@ -201,7 +200,7 @@ contract POVToken is TokenManager, ERC721 {
         view
         returns (string memory locationname)
     {
-        return locations[tokenIndexToLocationIndex[_tokenID]].locationname;
+        return locations[ownerAddressToLocationIndex[tokenIndexToOwnerAddress[_tokenID]]].locationname;
     }
 
     // |1| Right now there is no plans to send or interchange tokens after the owner is declared. It's self-explanatory because a Token is a Proof of Visit, you can't give your "visit" to someone else
