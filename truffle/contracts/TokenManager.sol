@@ -1,5 +1,5 @@
 pragma solidity ^0.5.16;
-pragma experimental ABIEncoderV2;
+
 
 
 contract TokenManager {
@@ -47,13 +47,42 @@ contract TokenManager {
     mapping(uint256 => string) public locationIDtoLocationName;
 
     //getters and setters for testing
-    function getLocationNameFromAddress(address _address)
+
+    //theses getters are for the Struct Location, because you can't return a stuct to another contract in solidity
+    function getLocationNameFromLocationAddress(address _address)
         public
         view
-        returns (string memory)
+        returns (string memory locationname)
     {
         return locations[ownerAddressToLocationIndex[_address]].locationname;
     }
+
+     function getTokensymbolFromLocationAddress(address _address)
+        public
+        view
+        returns (string memory tokensymbol)
+    {
+        return locations[ownerAddressToLocationIndex[_address]].tokensymbol;
+    }
+
+        function getTokennamefromLocationAddress(address _address)
+        public
+        view
+        returns (string memory tokenname)
+    {
+        return locations[ownerAddressToLocationIndex[_address]].tokenname;
+    }
+
+        function getLocationTokenSymbolFromAddress(address _address)
+        public
+        view
+        returns (string memory tokensymbol)
+    {
+        return locations[ownerAddressToLocationIndex[_address]].tokensymbol;
+    }
+
+
+
 
      
     function getTokenNameFromId(uint256 _id)
@@ -77,6 +106,11 @@ contract TokenManager {
         public
     {
         locationIDtoLocationName[_id] = _locationname;
+    }
+
+    function getAmountLocations() public view returns(uint256 amount)
+    {
+        return locations.length;
     }
 
 
