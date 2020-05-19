@@ -193,6 +193,8 @@ contract TestTokenManager {
     function testTotalSupply() public {
         povtoken = new POVToken();
 
+        //setup
+
 
             address testlocationaddress
          = 0x793f3338d13D4DB8AC607Efa9101012f3cb3bE5A;
@@ -205,10 +207,11 @@ contract TestTokenManager {
             testlocationname,
             testlocationaddress
         );
+        //setup end
 
         address testUserAddress = 0xe506F9EE73160b3574f6c13942e0616f6096add8;
 
- Assert.equal(
+        Assert.equal(
             0,
             povtoken.totalSupply(),
             "It should be 0 token in array "
@@ -222,109 +225,158 @@ contract TestTokenManager {
             "It should be 1 token in array "
         );
         povtoken.requestToken(testlocationaddress, testUserAddress);
-          Assert.equal(
+        Assert.equal(
             2,
             povtoken.totalSupply(),
             "It should be 2 token in array "
         );
     }
 
-    // function testTotalSupplyLocations() public {
-    //     povtoken.createLocation(
-    //         _tokenname,
-    //         _tokensymbol,
-    //         _locationname,
-    //         _locationWalletAddress
-    //     );
+    function testTotalSupplyLocations() public {
+        povtoken = new POVToken();
 
-    //     Assert.equal(
-    //         povtoken.totalSupplyLocations(),
-    //         expected1,
-    //         "It should be 1 location in array "
-    //     );
-    //     Assert.notEqual(
-    //         povtoken.totalSupplyLocations(),
-    //         expected2,
-    //         "there are no locations but there should be at least 1"
-    //     );
-    // }
+        Assert.equal(
+            0,
+            povtoken.totalSupplyLocations(),
+            "It should be no location in array "
+        );
 
-    // function testOwnerOf() public {
-    //     povtoken.createLocation(
-    //         _tokenname,
-    //         _tokensymbol,
-    //         _locationname,
-    //         _locationWalletAddress
-    //     );
-    //     povtoken.requestToken(
-    //         _locationId,
-    //         _locationWalletAddress,
-    //         _requestaddress
-    //     );
 
-    //     address expectedaddress = 0x19d7a2a11b6957912AC232a10a02B5FdD0df9A17;
+            address testlocationaddress
+         = 0x793f3338d13D4DB8AC607Efa9101012f3cb3bE5A;
+        string memory testlocationname = "testname";
+        string memory testtokenname = "testtoken";
+        string memory testtokensymbol = "tt";
 
-    //     Assert.equal(povtoken.ownerOf(0), expectedaddress, "?");
-    // }
+        setUpLocation(
+            testtokenname,
+            testtokensymbol,
+            testlocationname,
+            testlocationaddress
+        );
 
-    // function testBalanceOf() public {
-    //     uint256 expected = 3;
+        Assert.equal(
+            1,
+            povtoken.totalSupplyLocations(),
+            "It should be 1 location in array "
+        );
+    }
 
-    //     povtoken.createLocation(
-    //         _tokenname,
-    //         _tokensymbol,
-    //         _locationname,
-    //         _locationWalletAddress
-    //     );
-    //     povtoken.requestToken(
-    //         _locationId,
-    //         _locationWalletAddress,
-    //         _requestaddress
-    //     );
-    //     povtoken.requestToken(
-    //         _locationId,
-    //         _locationWalletAddress,
-    //         _requestaddress
-    //     );
-    //     povtoken.requestToken(
-    //         _locationId,
-    //         _locationWalletAddress,
-    //         _requestaddress
-    //     );
+    function testOwnerOf() public {
+        //setup
+        povtoken = new POVToken();
 
-    //     Assert.equal(
-    //         povtoken.balanceOf(_requestaddress),
-    //         expected,
-    //         "Should be 3 Tokens "
-    //     );
-    // }
+
+            address testlocationaddress
+         = 0x793f3338d13D4DB8AC607Efa9101012f3cb3bE5A;
+        string memory testlocationname = "testname";
+        string memory testtokenname = "testtoken";
+        string memory testtokensymbol = "tt";
+
+        setUpLocation(
+            testtokenname,
+            testtokensymbol,
+            testlocationname,
+            testlocationaddress
+        );
+
+        //setup end
+
+        address testUserAddress = 0xe506F9EE73160b3574f6c13942e0616f6096add8;
+
+        povtoken.requestToken(testlocationaddress, testUserAddress);
+
+        Assert.equal(
+            povtoken.ownerOf(0),
+            testUserAddress,
+            "not the same address"
+        );
+    }
+
+    function testBalanceOf() public {
+        //setup
+        povtoken = new POVToken();
+
+
+            address testlocationaddress
+         = 0x793f3338d13D4DB8AC607Efa9101012f3cb3bE5A;
+        string memory testlocationname = "testname";
+        string memory testtokenname = "testtoken";
+        string memory testtokensymbol = "tt";
+
+        setUpLocation(
+            testtokenname,
+            testtokensymbol,
+            testlocationname,
+            testlocationaddress
+        );
+
+           address testlocationaddress2
+         = 0x43187Df86a4E2230c77Cb70918aB0e95C931Db5A;
+        string memory testlocationname2 = "testname2";
+        string memory testtokenname2 = "testtoken2";
+        string memory testtokensymbol2 = "tt2";
+
+        setUpLocation(
+            testtokenname2,
+            testtokensymbol2,
+            testlocationname2,
+            testlocationaddress2
+        );
+
+        //setup end
+        address testUserAddress = 0xe506F9EE73160b3574f6c13942e0616f6096add8;
+        povtoken.requestToken(testlocationaddress, testUserAddress);
+        povtoken.requestToken(testlocationaddress, testUserAddress);
+        povtoken.requestToken(testlocationaddress2, testUserAddress);
+        povtoken.requestToken(testlocationaddress2, testUserAddress);
+
+        Assert.equal(
+            4,
+            povtoken.balanceOf(testUserAddress),
+        
+            "Should be 4 Tokens "
+        );
+    }
 
     // function testLocationNameOfToken() public {
-    //     povtoken.createLocation(
-    //         _tokenname,
-    //         _tokensymbol,
-    //         _locationname,
-    //         _locationWalletAddress
+    //     //setup
+    //     povtoken = new POVToken();
+
+
+    //         address testlocationaddress
+    //      = 0x793f3338d13D4DB8AC607Efa9101012f3cb3bE5A;
+    //     string memory testlocationname = "testname";
+    //     string memory testtokenname = "testtoken";
+    //     string memory testtokensymbol = "tt";
+
+    //     setUpLocation(
+    //         testtokenname,
+    //         testtokensymbol,
+    //         testlocationname,
+    //         testlocationaddress
     //     );
-    //     povtoken.requestToken(0, _locationWalletAddress, _requestaddress);
-    //     povtoken.requestToken(0, _locationWalletAddress, _requestaddress);
 
-    //     string memory expected = _locationname;
 
-    //     Assert.equal(povtoken.locationNameOfToken(0), expected, "failed");
-    //     Assert.equal(povtoken.locationNameOfToken(1), expected, "failed");
+    //         address testlocationaddress2
+    //      = 0x43187Df86a4E2230c77Cb70918aB0e95C931Db5A;
+    //     string memory testlocationname2 = "testname2";
+    //     string memory testtokenname2 = "testtoken2";
+    //     string memory testtokensymbol2 = "tt2";
 
-    //     _locationname = "testname2";
-
-    //     povtoken.createLocation(
-    //         _tokenname,
-    //         _tokensymbol,
-    //         _locationname,
-    //         _locationWalletAddress
+    //     setUpLocation(
+    //         testtokenname2,
+    //         testtokensymbol2,
+    //         testlocationname2,
+    //         testlocationaddress2
     //     );
-    //     povtoken.requestToken(1, _locationWalletAddress, _requestaddress);
+    //     //setup end
 
-    //     expected = "testname2";
+    //       address testUserAddress = 0xe506F9EE73160b3574f6c13942e0616f6096add8;
+    //     povtoken.requestToken(testlocationaddress, testUserAddress);
+    //     povtoken.requestToken(testlocationaddress2, testUserAddress);
+
+    // Assert.equal(povtoken.locationNameOfToken(2), expected, "failed");
 
     //     Assert.notEqual(povtoken.locationNameOfToken(0), expected, "failed");
     //     Assert.notEqual(povtoken.locationNameOfToken(1), expected, "failed");
