@@ -1,7 +1,6 @@
 pragma solidity ^0.5.16;
 
 
-
 contract TokenManager {
     constructor() public {}
 
@@ -11,14 +10,12 @@ contract TokenManager {
         string tokensymbol;
         string locationname;
         address locationaddress;
-    
     }
 
     //Struct data for all POV-Tokens in existence
     struct PovToken {
         string locationname;
         address locationaddress;
-    
     }
 
     //Storage for all Locations
@@ -27,6 +24,8 @@ contract TokenManager {
     //Storage for all tokens from all locations in existence
     PovToken[] public povtokens;
 
+    address[] public locationaddresses;
+
     //hashmaps
 
     //This mapping represents which Index of the povtokens map is owned by who (address)
@@ -34,12 +33,6 @@ contract TokenManager {
     mapping(uint256 => address) public tokenIndexToOwnerAddress;
 
     mapping(address => uint256) public ownerAddressToLocationIndex;
-
-  
-
-    
-
-    
 
     //used to see the total tokens of an address (needed for ERC721)
     mapping(address => uint256) public ownershipTokenCount;
@@ -57,7 +50,7 @@ contract TokenManager {
         return locations[ownerAddressToLocationIndex[_address]].locationname;
     }
 
-     function getTokensymbolFromLocationAddress(address _address)
+    function getTokensymbolFromLocationAddress(address _address)
         public
         view
         returns (string memory tokensymbol)
@@ -65,7 +58,7 @@ contract TokenManager {
         return locations[ownerAddressToLocationIndex[_address]].tokensymbol;
     }
 
-        function getTokennamefromLocationAddress(address _address)
+    function getTokennamefromLocationAddress(address _address)
         public
         view
         returns (string memory tokenname)
@@ -73,7 +66,7 @@ contract TokenManager {
         return locations[ownerAddressToLocationIndex[_address]].tokenname;
     }
 
-        function getLocationTokenSymbolFromAddress(address _address)
+    function getLocationTokenSymbolFromAddress(address _address)
         public
         view
         returns (string memory tokensymbol)
@@ -81,10 +74,6 @@ contract TokenManager {
         return locations[ownerAddressToLocationIndex[_address]].tokensymbol;
     }
 
-
-
-
-     
     function getTokenNameFromId(uint256 _id)
         public
         view
@@ -93,7 +82,6 @@ contract TokenManager {
         return locations[_id].tokenname;
     }
 
-    
     function getTokenSymbolFromId(uint256 _id)
         public
         view
@@ -108,12 +96,11 @@ contract TokenManager {
         locationIDtoLocationName[_id] = _locationname;
     }
 
-    function getAmountLocations() public view returns(uint256 amount)
-    {
+    function getAmountLocations() public view returns (uint256 amount) {
         return locations.length;
     }
 
-
+    //end
 
     //creates a new location that can give out tokens to visitors, e.g. "IFIS-Token, Institut für Internetsicherheit"
 
@@ -123,9 +110,12 @@ contract TokenManager {
         string calldata _locationname,
         address _locationWalletAddress
     ) external returns (uint256) {
-   
-
-
+        bool locationExists = false;
+        for (uint256 i = 0; i < locationaddresses.length; i++) {
+            if (locationaddresses[i] == _locationWalletAddress) {
+                locationExists = true;
+            }
+        }
 
         Location memory _newLocation = Location({
             tokenname: _tokenname,
@@ -136,44 +126,37 @@ contract TokenManager {
 
         //adds the location to the location array
         locations.push(_newLocation);
-        ownerAddressToLocationIndex[_locationWalletAddress] = locations.length-1;
-        
+        locationaddresses.push(_locationWalletAddress);
+        ownerAddressToLocationIndex[_locationWalletAddress] =
+            locations.length -
+            1;
 
-        
-
-      return 1;
+        return 1;
     }
 
     //Generates a Token for a Location and sets the requestsaddress as the owner, gets called when Visitor wants a Token from Admin
 
-  
     //locationId and locationaddress is given by admin
 
     //the function should return the tokenID to Admin to give it to requester. Right know i don't know how to do that
 
-    function requestToken(
-       
-        address _locationaddress,
-        address _requestaddress
-    ) external {
+    function requestToken(address _locationaddress, address _requestaddress)
+        external
+    {
         PovToken memory _newpovtoken = PovToken({
-            locationname: locations[ownerAddressToLocationIndex[_locationaddress]].locationname,
+            locationname: locations[ownerAddressToLocationIndex[_locationaddress]]
+                .locationname,
             locationaddress: _locationaddress
-            
         });
 
         //safes token to public manager array
         uint256 newTokenId = povtokens.push(_newpovtoken) - 1;
-
-       
 
         //sets requestsaddress as owner of token
         tokenIndexToOwnerAddress[newTokenId] = _requestaddress;
 
         //ups the totalBalance of address
         ownershipTokenCount[_requestaddress]++;
-
-
     }
 }
 
@@ -234,7 +217,9 @@ contract POVToken is TokenManager, ERC721 {
         view
         returns (string memory locationname)
     {
-        return locations[ownerAddressToLocationIndex[tokenIndexToOwnerAddress[_tokenID]]].locationname;
+        return
+            locations[ownerAddressToLocationIndex[tokenIndexToOwnerAddress[_tokenID]]]
+                .locationname;
     }
 
     // |1| Right now there is no plans to send or interchange tokens after the owner is declared. It's self-explanatory because a Token is a Proof of Visit, you can't give your "visit" to someone else
