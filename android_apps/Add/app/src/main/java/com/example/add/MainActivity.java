@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.web3j.crypto.CipherException;
 import org.web3j.crypto.Credentials;
@@ -18,6 +20,7 @@ import org.web3j.crypto.Keys;
 import org.web3j.crypto.Wallet;
 import org.web3j.crypto.WalletFile;
 import org.web3j.crypto.WalletUtils;
+import org.web3j.protocol.ObjectMapperFactory;
 import org.web3j.protocol.Web3j;
 
 import java.io.File;
@@ -33,12 +36,13 @@ import java.security.Security;
 import static android.os.Environment.DIRECTORY_DOWNLOADS;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    private Credentials credentials;
     String WALLET_NAME;
     final String PATH = Environment.getExternalStoragePublicDirectory(DIRECTORY_DOWNLOADS).getPath();
-    final String PATH_TWO  = Environment.getExternalStorageDirectory().getPath()
-                + "/Android"
-                        + Environment.getDataDirectory().getPath()
-                + "/net.ifis.proofofvisitclient/wallets";
+    final String PATH_TWO = Environment.getExternalStorageDirectory().getPath()
+            + "/Android"
+            + Environment.getDataDirectory().getPath()
+            + "/net.ifis.proofofvisitclient/wallets";
 
     TextView labelSumAddOne, labelNewSum;
     //addOne should start a transaction
@@ -50,73 +54,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        setupBouncyCastle();
-
-        Connector connector = (Connector) new Connector().execute();
-
-        // Values for the own gas provider
-        BigInteger GAS_LIMIT = BigInteger.valueOf(4300000);
-        BigInteger GAS_PRICE = BigInteger.valueOf(22000);
-
-        // create own gas provider
-        OwnGasProvider ownGasProvider = new OwnGasProvider(GAS_PRICE, GAS_LIMIT);
-
-        /*//generate Wallet
-        ECKeyPair keyPair = null;
-        try {
-            keyPair = Keys.createEcKeyPair();
-            Log.d("Test1", "successful");
-            WalletFile wallet = Wallet.createLight("password", keyPair);
-            Log.d("Test2", "successful");
-
-            Log.d("Test3", PATH_TWO);
-            String fileName = WalletUtils.generateLightNewWalletFile("password", new File(PATH));
-            this.WALLET_NAME = fileName;
-            Log.d("Test4", fileName);
-            Log.d("Test5", "successful");
-
-        } catch (CipherException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (NoSuchProviderException e) {
-            e.printStackTrace();
-        } catch (InvalidAlgorithmParameterException e) {
-            e.printStackTrace();
-        }*/
-        WALLET_NAME = "UTC--2020-05-19T17-21-18.251000000Z--b9129f13800dca4200c50de2b1a68417d16382ac.json";
-        Log.d("Test1", WALLET_NAME);
-        Log.d("Test2", checkSDCardStatus());
-        writeDataToPath(new File(PATH) ,WALLET_NAME,".json");
-
-        try {
-            // Load Wallet
-            Log.d("Test3", "successful");
-            File file = new File(PATH);
-            Log.d("Test4", String.valueOf(file.exists()));
-            Log.d("Test5", PATH+"/" +WALLET_NAME);
-            Credentials credentials = WalletUtils.loadCredentials("password", PATH +"/" + WALLET_NAME);
-            Log.d("Test6", "successful");
-
-            // Contract address in Bloxberg
-            String contractAddress = "0x0cA8f2CAdC651e865be3da134dF7A3ebEA464B2E";
-
-            Add addContract = Add.load(contractAddress, (Web3j) connector, credentials, ownGasProvider);
-            Log.d("Test9", "successful");
-            BigInteger value = addContract.a().send();
-            Log.d("Test10", "successful");
-            Log.d("Test11", String.valueOf(value));
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (CipherException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -130,15 +67,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         addOne.setOnClickListener(this);
         sum.setOnClickListener(this);
 
+        setupBouncyCastle();
+
+        /*String fileName = WalletData.createWallet("password");
+        Log.d("Wallet", fileName);*/
+
+
+        try {
+            credentials = WalletData.loadWallet("password", "/storage/emulated/0/Download/0x79c776b62418a09b8107a99f7069bb5cea327b88.json");
+            Log.d("credentials", credentials.getAddress());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (CipherException e) {
+            e.printStackTrace();
+        }
+
     }
 
 
     @Override
     public void onClick(View view) {
+
         switch (view.getId()) {
             case R.id.addOne:
                 clicked++;
                 labelSumAddOne.setText("clicked " + String.valueOf(clicked) + " times");
+                Connector connector = (Connector) new Connector(credentials).execute();
                 break;
             case R.id.sum:
                 currentSum = currentSum + clicked;
@@ -193,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             default:
                 Toast.makeText(this, "SD card is not available.", Toast.LENGTH_LONG).show();
                 check = "false";
-                return  check;
+                return check;
         }
     }
 
