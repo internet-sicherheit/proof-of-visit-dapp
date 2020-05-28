@@ -6,7 +6,8 @@
     <string name="tv_wallet_manager">No wallets detected.</string>
     <string name="tv_info_text_add_wallet">Passwords are not simular.</string>
     <string name="tv_info_text_no_wallet_selected">No wallet selected.</string>
-    <string name="btn_create_wallet">Create Walet</string>
+    <string name="tv_info_text_no_tokens">Currently no tokens to view.</string>
+    <string name="btn_create_wallet">Create Wallet</string>
     <string name="btn_yes">Yes</string>
     <string name="btn_no">Go back</string>
     <string name="btn_try_again">Try again</string>
