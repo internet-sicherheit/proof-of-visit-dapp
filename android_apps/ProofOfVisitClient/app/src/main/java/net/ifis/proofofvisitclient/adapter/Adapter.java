@@ -14,8 +14,10 @@ import net.ifis.proofofvisitclient.R;
 import net.ifis.proofofvisitclient.activities.MainActivity;
 import net.ifis.proofofvisitclient.constants.SharedPref;
 import net.ifis.proofofvisitclient.constants.AdapterMode;
+import net.ifis.proofofvisitclient.fragments.TokenListFragment;
 import net.ifis.proofofvisitclient.fragments.UnlockWalletFragment;
 import net.ifis.proofofvisitclient.fragments.WalletManagerFragment;
+import net.ifis.proofofvisitclient.model.Token;
 
 import java.util.ArrayList;
 
@@ -24,7 +26,8 @@ import static net.ifis.proofofvisitclient.activities.MainActivity.sharedPref;
 
 public class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private ArrayList<WalletManagerView> items;
+    private ArrayList<WalletManagerView> itemsWallet;
+    private ArrayList<TokenListView> itemsToken;
 
     private Context context;
     private String adapterMode;
@@ -32,7 +35,8 @@ public class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private int listLength;
 
     public Adapter(Context context, int listLength, String adapterMode) {
-        this.items = new ArrayList<>();
+        this.itemsWallet = new ArrayList<>();
+        this.itemsToken = new ArrayList<>();
         this.context = context;
         this.listLength = listLength;
         this.adapterMode = adapterMode;
@@ -47,6 +51,11 @@ public class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if(this.adapterMode.equals(AdapterMode.WALLETMANGER)) {
             itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_wallet_manager, null);
             viewHolder = new WalletManagerView(itemView);
+        }
+
+        if(this.adapterMode.equals(AdapterMode.TOKENVIEW)) {
+            itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_token_list, null);
+            viewHolder = new TokenListView(itemView);
         }
 
         return viewHolder;
@@ -83,17 +92,25 @@ public class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         Toast.makeText(context, selectedWalletAddress, Toast.LENGTH_SHORT).show();
                     }
                 });
-                items.add(walletManagerView);
+            itemsWallet.add(walletManagerView);
         }
 
         if(this.adapterMode.equals(AdapterMode.TOKENVIEW)) {
 
+            TokenListView tokenListView = (TokenListView) viewHolder;
 
+            ArrayList<Token> tokenList = TokenListFragment.tokenManager.getTokenList();
+
+            tokenListView.getLocationNameTv().setText(tokenList.get(i).getLocationName());
+            tokenListView.getTokenAmountTv().setText("" + tokenList.get(i).getTokenAmount());
+            tokenListView.getTokenSymbolTv().setText(tokenList.get(i).getTokenSymbol());
+
+            itemsToken.add(tokenListView);
         }
     }
 
     private void setItemsInvisable() {
-        for (WalletManagerView item : items) {
+        for (WalletManagerView item : itemsWallet) {
             item.getCheckBoxIv().setVisibility(View.INVISIBLE);
         }
     }

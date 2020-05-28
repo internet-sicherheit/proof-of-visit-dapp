@@ -57,6 +57,10 @@ public class TokenManager {
         return this.tokenList;
     }
 
+    public int getTokenListSize() {
+        return this.tokenList.size();
+    }
+
     public void showTokens() {
         for (int i = 0; i < this.tokenList.size(); i++) {
             Token t = this.tokenList.get(i);

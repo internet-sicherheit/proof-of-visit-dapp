@@ -29,7 +29,7 @@ import static net.ifis.proofofvisitclient.activities.MainActivity.sharedPref;
 
 public class TokenListFragment extends Fragment {
 
-    private TokenManager tokenManager;
+    public static TokenManager tokenManager;
 
     private TextView infoText;
     public static RecyclerView recyclerView;
@@ -55,12 +55,12 @@ public class TokenListFragment extends Fragment {
         tokenManager = new TokenManager("[{\"locationaddress\":\"0x123456789\",\"locationname\":\"Westfaelische Hochschule\",\"tokenname\":\"Westi\",\"tokensymbol\":\"WHS\",\"tokenamount\":5,\"token\":[1234,5678,901245]},{\"locationaddress\":\"0x987654321\",\"locationname\":\"Institut fuer Internetsicherheit\",\"tokenname\":\"IntSichi\",\"tokensymbol\":\"IFIS\",\"tokenamount\":3,\"token\":[1112,7549,64613]}]");
         tokenManager.showTokens();
 
-        if(0 == 0) {
+        if(tokenManager.getTokenListSize() == 0) {
             infoText.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.INVISIBLE);
 
         } else {
-            rvAdapter = new Adapter(getContext(), 0, AdapterMode.WALLETMANGER);
+            rvAdapter = new Adapter(getContext(), tokenManager.getTokenListSize(), AdapterMode.TOKENVIEW);
             recyclerView.setAdapter(rvAdapter);
 
             infoText.setVisibility(View.INVISIBLE);
