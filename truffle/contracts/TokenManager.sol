@@ -111,27 +111,56 @@ contract TokenManager {
         address _locationWalletAddress
     ) external returns (uint256) {
         bool locationExists = false;
-        for (uint256 i = 0; i < locationaddresses.length; i++) {
+        bool locationnameExists = false;
+        bool tokennameExists = false;
+        bool tokensymbolExists = false;
+
+        for (uint256 i = 0; i < locations.length; i++) {
             if (locationaddresses[i] == _locationWalletAddress) {
                 locationExists = true;
             }
+            if (
+                keccak256(bytes(locations[i].locationname)) ==
+                keccak256(bytes(_locationname))
+            ) {
+                locationnameExists = true;
+            }
+            if (
+                keccak256(bytes(locations[i].tokenname)) ==
+                keccak256(bytes(_tokenname))
+            ) {
+                tokennameExists = true;
+            }
+            if (
+                keccak256(bytes(locations[i].tokensymbol)) ==
+                keccak256(bytes(_tokensymbol))
+            ) {
+                tokensymbolExists = true;
+            }
         }
 
-        Location memory _newLocation = Location({
-            tokenname: _tokenname,
-            tokensymbol: _tokensymbol,
-            locationname: _locationname,
-            locationaddress: _locationWalletAddress
-        });
+        //missing else statements for caller to know what the error is
+        if (
+            locations.length == 0 ||
+            (locationExists == false &&
+                locationnameExists == false &&
+                tokennameExists == false &&
+                tokensymbolExists == false)
+        ) {
+            Location memory _newLocation = Location({
+                tokenname: _tokenname,
+                tokensymbol: _tokensymbol,
+                locationname: _locationname,
+                locationaddress: _locationWalletAddress
+            });
 
-        //adds the location to the location array
-        locations.push(_newLocation);
-        locationaddresses.push(_locationWalletAddress);
-        ownerAddressToLocationIndex[_locationWalletAddress] =
-            locations.length -
-            1;
-
-        return 1;
+            //adds the location to the location array
+            locations.push(_newLocation);
+            locationaddresses.push(_locationWalletAddress);
+            ownerAddressToLocationIndex[_locationWalletAddress] =
+                locations.length -
+                1;
+        }
     }
 
     //Generates a Token for a Location and sets the requestsaddress as the owner, gets called when Visitor wants a Token from Admin
@@ -173,8 +202,11 @@ contract ERC721 {
 
     function transfer(address _to, uint256 _tokenId) external;
 
-    function transferFrom(address _from, address _to, uint256 _tokenId)
-        external;
+    function transferFrom(
+        address _from,
+        address _to,
+        uint256 _tokenId
+    ) external;
 
     // Events
     event Transfer(address from, address to, uint256 tokenId);
@@ -239,9 +271,11 @@ contract POVToken is TokenManager, ERC721 {
     }
 
     //See |1|
-    function transferFrom(address _from, address _to, uint256 _tokenId)
-        external
-    {
+    function transferFrom(
+        address _from,
+        address _to,
+        uint256 _tokenId
+    ) external {
         emit Transfer(_from, _to, _tokenId);
     }
 
