@@ -21,7 +21,12 @@ import org.web3j.crypto.CipherException;
 
 import java.io.IOException;
 
+import static net.ifis.proofofvisitclient.activities.MainActivity.sharedPref;
+
 public class UnlockWalletFragment extends Fragment {
+
+    public static View walletItemView;
+    public static String selectedWalletAddress;
 
     private TextView walletAddressTv;
     private EditText passwordInput;
@@ -56,7 +61,8 @@ public class UnlockWalletFragment extends Fragment {
                 try {
 
                     MainActivity.walletManager.loadWallet(password, walletAddress);
-
+                    walletItemView.setVisibility(View.VISIBLE);
+                    sharedPref.add(SharedPref.SHAREDPREFERENCES_WALLET_ADDRESS, selectedWalletAddress);
                     // encrypted pw speichern
 
                 } catch (IOException ioe) {

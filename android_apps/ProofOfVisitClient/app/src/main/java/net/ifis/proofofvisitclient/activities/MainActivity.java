@@ -16,6 +16,7 @@ import net.ifis.proofofvisitclient.constants.SharedPref;
 import net.ifis.proofofvisitclient.fragments.GenerateQRFragment;
 import net.ifis.proofofvisitclient.fragments.TokenListFragment;
 import net.ifis.proofofvisitclient.fragments.WalletManagerFragment;
+import net.ifis.proofofvisitclient.model.Connector;
 import net.ifis.proofofvisitclient.model.WalletManager;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;

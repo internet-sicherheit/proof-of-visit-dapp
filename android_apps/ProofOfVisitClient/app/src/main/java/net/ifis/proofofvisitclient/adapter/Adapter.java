@@ -60,7 +60,7 @@ public class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             WalletManagerView walletManagerView = (WalletManagerView) viewHolder;
 
             String walletName = WalletManagerFragment.walletManager.getWalletNames()[i];
-                walletManagerView.getWalletAddressTv().setText(walletName);
+            walletManagerView.getWalletAddressTv().setText(walletName);
 
                 if(sharedPref.getString(SharedPref.SHAREDPREFERENCES_WALLET_ADDRESS).equals(walletName)) {
                     walletManagerView.getCheckBoxIv().setVisibility(View.VISIBLE);
@@ -71,10 +71,10 @@ public class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     public void onClick(View v) {
 
                         setItemsInvisable();
-                        walletManagerView.getCheckBoxIv().setVisibility(View.VISIBLE);
                         String selectedWalletAddress = walletManagerView.getWalletAddressTv().getText().toString();
-                        sharedPref.add(SharedPref.SHAREDPREFERENCES_WALLET_ADDRESS, selectedWalletAddress);
 
+                        UnlockWalletFragment.walletItemView = v;
+                        UnlockWalletFragment.selectedWalletAddress = selectedWalletAddress;
 
                         UnlockWalletFragment unlockWalletFragment = new UnlockWalletFragment();
                         FragmentManager fragmentManager = MainActivity.fragmentManager;
