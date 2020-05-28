@@ -1,7 +1,6 @@
 package com.example.add;
 
 import android.os.Environment;
-import android.widget.Toast;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -47,7 +46,7 @@ public class WalletData {
     }
 
     public static Credentials loadWallet(String password, String walletFile) throws IOException, CipherException {
-        return WalletUtils.loadCredentials(password,  walletFile );
+        return WalletUtils.loadCredentials(password, walletFile);
     }
 
 }
