@@ -8,44 +8,7 @@ import "..//contracts/TokenManager.sol";
 contract TestTokenManager {
     POVToken povtoken;
 
-    function testCreateLocation() public {
-        povtoken = new POVToken();
-
-
-            address testlocationaddress
-         = 0x793f3338d13D4DB8AC607Efa9101012f3cb3bE5A;
-        string memory testlocationname = "testname";
-        string memory testtokenname = "testtoken";
-        string memory testtokensymbol = "tt";
-
-        setUpLocation(
-            testtokenname,
-            testtokensymbol,
-            testlocationname,
-            testlocationaddress
-        );
-
-        Assert.equal(
-            1,
-            povtoken.getAmountLocations(),
-            "There should be 1 Location"
-        );
-        Assert.equal(
-            testlocationname,
-            povtoken.getLocationNameFromLocationAddress(testlocationaddress),
-            "Should be testname"
-        );
-        Assert.equal(
-            testtokensymbol,
-            povtoken.getTokensymbolFromLocationAddress(testlocationaddress),
-            "Should be tt"
-        );
-        Assert.equal(
-            testtokenname,
-            povtoken.getTokennamefromLocationAddress(testlocationaddress),
-            "should be testtoken"
-        );
-    }
+    
 
     //One token
     function testRequestToken1() public {
@@ -339,41 +302,7 @@ contract TestTokenManager {
         );
     }
 
-    //trying to create multiple locations from same address
-    function testCreateLocation2() public {
-        povtoken = new POVToken();
-
-
-            address testlocationaddress
-         = 0x793f3338d13D4DB8AC607Efa9101012f3cb3bE5A;
-        string memory testlocationname = "testname";
-        string memory testtokenname = "testtoken";
-        string memory testtokensymbol = "tt";
-
-        setUpLocation(
-            testtokenname,
-            testtokensymbol,
-            testlocationname,
-            testlocationaddress
-        );
-
-        string memory testlocationname2 = "testname2";
-        string memory testtokenname2 = "testtoken2";
-        string memory testtokensymbol2 = "tt2";
-
-        setUpLocation(
-            testtokenname2,
-            testtokensymbol2,
-            testlocationname2,
-            testlocationaddress
-        );
-
-        Assert.equal(
-            1,
-            povtoken.getAmountLocations(),
-            "should be only 1 location"
-        );
-    }
+   
 
     // function testLocationNameOfToken() public {
     //     //setup
