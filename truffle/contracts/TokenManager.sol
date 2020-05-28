@@ -187,6 +187,146 @@ contract TokenManager {
         //ups the totalBalance of address
         ownershipTokenCount[_requestaddress]++;
     }
+
+    function getUserTokenlist(address useraddress)
+        public
+        view
+        returns (string memory tokens)
+    {
+
+        
+
+string memory jsonObject = "[";
+        for(uint256 i = 0; i < votes.length; i++) {
+
+            jsonObject = strConcat(jsonObject, "{");
+            jsonObject = strConcat(jsonObject, '"location"');
+            jsonObject = strConcat(jsonObject, int2str(i));
+            jsonObject = strConcat(jsonObject, '":"');
+            jsonObject = strConcat(jsonObject, addressToString(x));
+
+
+
+
+
+            jsonObject = strConcat(jsonObject, int2str(votes[i].voteIndex));
+            jsonObject = strConcat(jsonObject, '",');
+            jsonObject = strConcat(jsonObject, '"date":"');
+            jsonObject = strConcat(jsonObject, votes[i].date);
+            jsonObject = strConcat(jsonObject, '",');
+            jsonObject = strConcat(jsonObject, '"creator":"');
+            jsonObject = strConcat(jsonObject, addressToString(votes[i].creator));
+            jsonObject = strConcat(jsonObject, '",');
+            jsonObject = strConcat(jsonObject, '"vote_subject":"');
+            jsonObject = strConcat(jsonObject, votes[i].voteSubject);
+            jsonObject = strConcat(jsonObject, '",');
+            jsonObject = strConcat(jsonObject, '"vote_description":"');
+            jsonObject = strConcat(jsonObject, votes[i].voteDescription);
+            jsonObject = strConcat(jsonObject, '",');
+            jsonObject = strConcat(jsonObject, '"vote_options":');
+            jsonObject = strConcat(jsonObject, '[');
+            for(uint256 j = 0; j < votes[i].voteOptions.length; j++) {
+                jsonObject = strConcat(jsonObject, '{"option');
+                jsonObject = strConcat(jsonObject, int2str(j));
+                jsonObject = strConcat(jsonObject, '":"');
+                jsonObject = strConcat(jsonObject, votes[i].voteOptions[j]);
+                if(j == votes[i].voteOptions.length - 1) {
+                    jsonObject = strConcat(jsonObject, '"}');
+                } else {
+                    jsonObject = strConcat(jsonObject, '"},');
+                }
+            }
+            jsonObject = strConcat(jsonObject, '],');
+            jsonObject = strConcat(jsonObject, '"vote_counts":');
+            jsonObject = strConcat(jsonObject, '[');
+            for(uint256 j = 0; j < votes[i].voteCounts.length; j++) {
+                jsonObject = strConcat(jsonObject, '{"count');
+                jsonObject = strConcat(jsonObject, int2str(j));
+                jsonObject = strConcat(jsonObject, '":"');
+                jsonObject = strConcat(jsonObject, int2str(votes[i].voteCounts[j]));
+                if(j == votes[i].voteCounts.length - 1) {
+                    jsonObject = strConcat(jsonObject, '"}');
+                } else {
+                    jsonObject = strConcat(jsonObject, '"},');
+                }
+            }
+            jsonObject = strConcat(jsonObject, '],');
+            jsonObject = strConcat(jsonObject, '"vote_states":');
+            jsonObject = strConcat(jsonObject, '[');
+            jsonObject = strConcat(jsonObject, '{"voter_counter":"');
+            jsonObject = strConcat(jsonObject, int2str(votes[i].voterCounter));
+            jsonObject = strConcat(jsonObject, '"},{"total_voter":"');
+            jsonObject = strConcat(jsonObject, int2str(votes[i].totalVoter));
+            jsonObject = strConcat(jsonObject, '"}]');
+            if(i == votes.length - 1) {
+                jsonObject = strConcat(jsonObject, '}');
+            } else {
+                jsonObject = strConcat(jsonObject, '},');
+            }
+        }
+        jsonObject = strConcat(jsonObject, ']');
+        return jsonObject;
+
+
+    }
+
+    //-------------------
+    function compareStrings(string memory _a, string memory _b)
+        private
+        pure
+        returns (bool)
+    {
+        return (keccak256(abi.encodePacked((_a))) ==
+            keccak256(abi.encodePacked((_b))));
+    }
+
+    function strConcat(string memory s1, string memory s2)
+        private
+        pure
+        returns (string memory)
+    {
+        return string(abi.encodePacked(s1, s2));
+    }
+
+    function addressToString(address x) private pure returns (string memory) {
+        bytes memory s = new bytes(40);
+        for (uint256 i = 0; i < 20; i++) {
+            bytes1 b = bytes1(uint8(uint256(x) / (2**(8 * (19 - i)))));
+            bytes1 hi = bytes1(uint8(b) / 16);
+            bytes1 lo = bytes1(uint8(b) - 16 * uint8(hi));
+            s[2 * i] = char(hi);
+            s[2 * i + 1] = char(lo);
+        }
+        return strConcat("0x", string(s));
+    }
+
+    function char(bytes1 b) private pure returns (bytes1 c) {
+        if (uint8(b) < 10) return bytes1(uint8(b) + 0x30);
+        else return bytes1(uint8(b) + 0x57);
+    }
+
+    function int2str(uint256 i)
+        internal
+        pure
+        returns (string memory _uintAsString)
+    {
+        if (_i == 0) {
+            return "0";
+        }
+        uint256 j = _i;
+        uint256 len;
+        while (j != 0) {
+            len++;
+            j /= 10;
+        }
+        bytes memory bstr = new bytes(len);
+        uint256 k = len - 1;
+        while (_i != 0) {
+            bstr[k--] = bytes1(uint8(48 + (_i % 10)));
+            _i /= 10;
+        }
+        return string(bstr);
+    }
 }
 
 
