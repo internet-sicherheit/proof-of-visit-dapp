@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import com.google.zxing.WriterException;
 
 import net.ifis.proofofvisitclient.R;
+import net.ifis.proofofvisitclient.activities.MainActivity;
 import net.ifis.proofofvisitclient.constants.SharedPref;
 
 import androidmads.library.qrgenearator.QRGContents;
@@ -23,6 +24,7 @@ import static net.ifis.proofofvisitclient.activities.MainActivity.sharedPref;
 
 public class GenerateQRFragment extends Fragment {
 
+    TextView walletAddressTv;
     TextView infoTextTv;
     ImageView qrCodeImageView;
     QRGEncoder qrgEncoder;
@@ -42,13 +44,17 @@ public class GenerateQRFragment extends Fragment {
 
         qrCodeImageView = view.findViewById(R.id.qr_code_image_view);
         infoTextTv = view.findViewById(R.id.infoTextTv);
+        walletAddressTv = view.findViewById(R.id.walletAddressTv);
+
 
         if(sharedPref.getString(SharedPref.SHAREDPREFERENCES_WALLET_ADDRESS).equals(SharedPref.SHAREDPREFERENCES_DEFAULT_VALUE)) {
             infoTextTv.setVisibility(View.VISIBLE);
             qrCodeImageView.setVisibility(View.INVISIBLE);
+            walletAddressTv.setVisibility(View.INVISIBLE);
         } else {
             infoTextTv.setVisibility(View.INVISIBLE);
             qrCodeImageView.setVisibility(View.VISIBLE);
+            walletAddressTv.setVisibility(View.VISIBLE);
 
             String data = sharedPref.getString(SharedPref.SHAREDPREFERENCES_WALLET_ADDRESS);
 
@@ -59,6 +65,8 @@ public class GenerateQRFragment extends Fragment {
             } catch(WriterException we) {
                 we.printStackTrace();
             }
+
+            walletAddressTv.setText(sharedPref.getString(SharedPref.SHAREDPREFERENCES_WALLET_ADDRESS));
         }
 
     }

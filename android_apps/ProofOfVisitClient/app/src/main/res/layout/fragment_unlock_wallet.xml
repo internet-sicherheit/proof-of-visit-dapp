@@ -39,11 +39,10 @@
         android:id="@+id/unlockBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/btn_create_wallet"
+        android:text="@string/btn_unlock_wallet"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guidleBottom"
-        tools:text="@string/btn_unlock_wallet" />
+        app:layout_constraintTop_toTopOf="@+id/guidleBottom" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidleBottom"

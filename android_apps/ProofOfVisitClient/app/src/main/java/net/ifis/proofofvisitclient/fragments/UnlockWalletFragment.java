@@ -47,7 +47,7 @@ public class UnlockWalletFragment extends Fragment {
 
         findViewByIds(view);
 
-        walletAddressTv.setText(MainActivity.sharedPref.getString(SharedPref.SHAREDPREFERENCES_WALLET_ADDRESS));
+        walletAddressTv.setText(selectedWalletAddress);
 
         tryAgainBtn.setVisibility(View.INVISIBLE);
 
@@ -55,12 +55,11 @@ public class UnlockWalletFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                String walletAddress = MainActivity.sharedPref.getString(SharedPref.SHAREDPREFERENCES_WALLET_ADDRESS);
                 String password = passwordInput.getText().toString();
 
                 try {
 
-                    MainActivity.walletManager.loadWallet(password, walletAddress);
+                    MainActivity.walletManager.loadWallet(password, selectedWalletAddress);
                     walletItemView.setVisibility(View.VISIBLE);
                     sharedPref.add(SharedPref.SHAREDPREFERENCES_WALLET_ADDRESS, selectedWalletAddress);
                     // encrypted pw speichern
