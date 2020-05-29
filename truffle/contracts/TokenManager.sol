@@ -50,7 +50,7 @@ contract TokenManager {
         return locations[ownerAddressToLocationIndex[_address]].locationname;
     }
 
-    function getTokensymbolFromLocationAddress(address _address)
+    function getTokenSymbolFromLocationAddress(address _address)
         public
         view
         returns (string memory tokensymbol)
@@ -66,23 +66,13 @@ contract TokenManager {
         return locations[ownerAddressToLocationIndex[_address]].tokenname;
     }
 
-    function getLocationTokenSymbolFromAddress(address _address)
-        public
-        view
-        returns (string memory tokensymbol)
-    {
-        return locations[ownerAddressToLocationIndex[_address]].tokensymbol;
-    }
-
-       //gives the name of the location from given token
+    //gives the name of the location from given token
     function getLocationNameFromId(uint256 _id)
         public
         view
         returns (string memory locationname)
     {
-        return
-            locations[ownerAddressToLocationIndex[tokenIndexToOwnerAddress[_tokenID]]]
-                .locationname;
+        return povtokens[_id].locationname;
     }
 
     function getTokenNameFromId(uint256 _id)
@@ -90,7 +80,7 @@ contract TokenManager {
         view
         returns (string memory)
     {
-        return locations[_id].tokenname;
+        return getTokennamefromLocationAddress(povtokens[_id].locationaddress);
     }
 
     function getTokenSymbolFromId(uint256 _id)
@@ -98,7 +88,7 @@ contract TokenManager {
         view
         returns (string memory)
     {
-        return locations[_id].tokensymbol;
+        return getTokenSymbolFromLocationAddress(povtokens[_id].locationaddress);
     }
 
     function setLocationNameForId(uint256 _id, string memory _locationname)
@@ -109,6 +99,14 @@ contract TokenManager {
 
     function getAmountLocations() public view returns (uint256 amount) {
         return locations.length;
+    }
+
+    function getLocationAddressFromId(uint256 _id)
+        public
+        view
+        returns (address locationaddress)
+    {
+        return povtokens[_id].locationaddress;
     }
 
     //end
@@ -204,48 +202,43 @@ contract TokenManager {
         view
         returns (string memory jsonTokenList)
     {
-
         string memory jsonObject = "[";
 
-        for(uint256 i = 0; i < tokensOfUser.length; i++) {
+        for (uint256 i = 0; i < povtokens.length; i++) {
+            if (tokenIndexToOwnerAddress[i] == useraddress) {
+                jsonObject = strConcat(jsonObject, "{");
 
-            if(tokenIndexToOwnerAddress(i) == useraddress) {
+                jsonObject = strConcat(jsonObject, '"locationaddress":"');
+                jsonObject = strConcat(jsonObject, getLocationAddressFromId(i));
+                jsonObject = strConcat(jsonObject, '",');
 
-            jsonObject = strConcat(jsonObject, "{");
+                jsonObject = strConcat(jsonObject, '"locationname":"');
+                jsonObject = strConcat(jsonObject, getLocationNameFromId(i));
+                jsonObject = strConcat(jsonObject, '",');
 
-            jsonObject = strConcat(jsonObject, '"locationaddress":"');
-            jsonObject = strConcat(jsonObject, addressToString(x));
-            jsonObject = strConcat(jsonObject, '",');
+                jsonObject = strConcat(jsonObject, '"tokenname":"');
+                jsonObject = strConcat(jsonObject, getTokenNameFromId(i));
+                jsonObject = strConcat(jsonObject, '",');
 
-            jsonObject = strConcat(jsonObject, '"locationname":"');
-            jsonObject = strConcat(jsonObject, getLocationNameFromId(i));
-            jsonObject = strConcat(jsonObject, '",');
+                jsonObject = strConcat(jsonObject, '"tokensymbol":"');
+                jsonObject = strConcat(jsonObject, getTokenSymbolFromId(i));
+                jsonObject = strConcat(jsonObject, '",');
 
-            jsonObject = strConcat(jsonObject, '"tokenname":"');
-            jsonObject = strConcat(jsonObject, getTokenNameFromId(i));
-            jsonObject = strConcat(jsonObject, '",');
+                jsonObject = strConcat(jsonObject, '"token":');
+                jsonObject = strConcat(jsonObject, int2str(i));
 
-            jsonObject = strConcat(jsonObject, '"tokensymbol":"');
-            jsonObject = strConcat(jsonObject, getTokenSymbolFromId(i));
-            jsonObject = strConcat(jsonObject, '",');
-
-            jsonObject = strConcat(jsonObject, '"token":');
-            jsonObject = strConcat(jsonObject, int2str(i));
-
-            if(i == tokenOfUser.length - 1) {
-                jsonObject = strConcat(jsonObject, '"}');
-            } else {
-                jsonObject = strConcat(jsonObject, '"},');
+                if (i == povtokens.length - 1) {
+                    jsonObject = strConcat(jsonObject, '"}');
+                } else {
+                    jsonObject = strConcat(jsonObject, '"},');
+                }
             }
-        }
 
-        jsonObject = strConcat(jsonObject, ']');
-        
+            jsonObject = strConcat(jsonObject, "]");
         }
 
         return jsonObject;
     }
-
 
     //-------------------
     function compareStrings(string memory _a, string memory _b)
@@ -282,7 +275,7 @@ contract TokenManager {
         else return bytes1(uint8(b) + 0x57);
     }
 
-    function int2str(uint256 i)
+    function int2str(uint256 _i)
         internal
         pure
         returns (string memory _uintAsString)
@@ -359,8 +352,6 @@ contract POVToken is TokenManager, ERC721 {
     function balanceOf(address _owner) public view returns (uint256 balance) {
         return ownershipTokenCount[_owner];
     }
-
- 
 
     // |1| Right now there is no plans to send or interchange tokens after the owner is declared. It's self-explanatory because a Token is a Proof of Visit, you can't give your "visit" to someone else
 
