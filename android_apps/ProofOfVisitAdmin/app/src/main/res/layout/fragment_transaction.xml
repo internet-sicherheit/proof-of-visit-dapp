@@ -21,6 +21,7 @@
 
     <Button
         android:id="@+id/continueBtn"
+        style="@style/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -33,6 +34,7 @@
 
     <Button
         android:id="@+id/abortBtn"
+        style="@style/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
