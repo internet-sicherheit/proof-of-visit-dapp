@@ -209,7 +209,7 @@ contract TokenManager {
                 jsonObject = strConcat(jsonObject, "{");
 
                 jsonObject = strConcat(jsonObject, '"locationaddress":"');
-                jsonObject = strConcat(jsonObject, getLocationAddressFromId(i));
+                jsonObject = strConcat(jsonObject, addressToString(getLocationAddressFromId(i)));
                 jsonObject = strConcat(jsonObject, '",');
 
                 jsonObject = strConcat(jsonObject, '"locationname":"');
