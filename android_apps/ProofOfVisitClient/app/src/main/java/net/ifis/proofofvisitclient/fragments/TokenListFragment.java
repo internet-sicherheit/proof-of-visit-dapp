@@ -52,7 +52,7 @@ public class TokenListFragment extends Fragment {
         setUpRecyclerView(view);
 
         // json string parsen
-        tokenManager = new TokenManager("[{\"locationaddress\":\"0x123456789\",\"locationname\":\"Westfaelische Hochschule\",\"tokenname\":\"Westi\",\"tokensymbol\":\"WHS\",\"tokenamount\":5,\"token\":[1234,5678,901245]},{\"locationaddress\":\"0x987654321\",\"locationname\":\"Institut fuer Internetsicherheit\",\"tokenname\":\"IntSichi\",\"tokensymbol\":\"IFIS\",\"tokenamount\":3,\"token\":[1112,7549,64613]}]");
+        tokenManager = new TokenManager("[{\"locationaddress\":\"0x123456789\",\"locationname\":\"Westfaelische Hochschule\",\"tokenname\":\"Westi\",\"tokensymbol\":\"WHS\",\"token\":234},{\"locationaddress\":\"0x987654321\",\"locationname\":\"Institut fuer Internetsicherheit\",\"tokenname\":\"IntSich\",\"tokensymbol\":\"IFIS\",\"token\":6454},{\"locationaddress\":\"0x987654321\",\"locationname\":\"Institut fuer Internetsicherheit\",\"tokenname\":\"IntSich\",\"tokensymbol\":\"IFIS\",\"token\":85714},{\"locationaddress\":\"0x123456789\",\"locationname\":\"Westfaelische Hochschule\",\"tokenname\":\"Westi\",\"tokensymbol\":\"WHS\",\"token\":7894}]");
         tokenManager.showTokens();
 
         if(tokenManager.getTokenListSize() == 0) {

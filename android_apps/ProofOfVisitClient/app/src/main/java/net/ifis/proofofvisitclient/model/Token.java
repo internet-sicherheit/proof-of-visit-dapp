@@ -41,4 +41,26 @@ public class Token {
     public int getTokenOfIndex(int index) {
         return this.token[index];
     }
+    public void setToken(int[] token) {
+        this.token = token;
+        this.tokenAmount = this.token.length;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+
+        boolean isEqual = false;
+
+        if(object instanceof Token) {
+            Token token = (Token) object;
+            if(this.locationName.equals(token.locationName)
+            && this.locationAddress.equals(token.locationAddress)
+            && this.tokenAmount == token.tokenAmount
+            && this.tokenSymbol.equals(token.tokenSymbol)
+            && this.tokenName.equals(token.tokenName)) {
+                isEqual = true;
+            }
+        }
+        return isEqual;
+    }
 }
