@@ -202,40 +202,18 @@ contract TokenManager {
     function getUserTokenlist(address useraddress)
         public
         view
-        returns (string memory tokens)
+        returns (string memory jsonTokenList)
     {
 
+        string memory jsonObject = "[";
 
-            uint256[] memory tokensOfUser;
-      
-
-           
-
-        for(int i = 0; i < povtokens.lenght-1; i++)
-        {
-
-
-
-           if(tokenIndexToOwnerAddress(i) == useraddress)
-           {
-               tokensOfUser.push(i);
-
-           }
-           
-
-
-        }
-
-
-    
-
-string memory jsonObject = "[";
         for(uint256 i = 0; i < tokensOfUser.length; i++) {
 
+            if(tokenIndexToOwnerAddress(i) == useraddress) {
+
             jsonObject = strConcat(jsonObject, "{");
-            jsonObject = strConcat(jsonObject, '"location"');
-            jsonObject = strConcat(jsonObject, int2str(i));
-            jsonObject = strConcat(jsonObject, '":"');
+
+            jsonObject = strConcat(jsonObject, '"locationaddress":"');
             jsonObject = strConcat(jsonObject, addressToString(x));
             jsonObject = strConcat(jsonObject, '",');
 
@@ -251,25 +229,10 @@ string memory jsonObject = "[";
             jsonObject = strConcat(jsonObject, getTokenSymbolFromId(i));
             jsonObject = strConcat(jsonObject, '",');
 
-            jsonObject = strConcat(jsonObject, '"tokenamount":');
-            jsonObject = strConcat(jsonObject, x);
-            jsonObject = strConcat(jsonObject, ',');
+            jsonObject = strConcat(jsonObject, '"token":');
+            jsonObject = strConcat(jsonObject, int2str(i));
 
-            jsonObject = strConcat(jsonObject, '"token":[');
-
-            for(uint256 j = 0; j < votes.length; j++) {
-
-                jsonObject = strConcat(jsonObject, '"token"');
-                jsonObject = strConcat(jsonObject, int2str(j));
-                jsonObject = strConcat(jsonObject, '":');
-                jsonObject = strConcat(jsonObject, x);
-
-                if(j == votes[j].voteOptions.length - 1) {
-                    jsonObject = strConcat(jsonObject, ',');
-                }
-            }
-
-            if(j == votes[i].voteOptions.length - 1) {
+            if(i == tokenOfUser.length - 1) {
                 jsonObject = strConcat(jsonObject, '"}');
             } else {
                 jsonObject = strConcat(jsonObject, '"},');
@@ -277,6 +240,8 @@ string memory jsonObject = "[";
         }
 
         jsonObject = strConcat(jsonObject, ']');
+        
+        }
 
         return jsonObject;
     }
