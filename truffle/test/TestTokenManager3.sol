@@ -24,8 +24,10 @@ contract TestTokenManager3 {
         povtoken = new POVToken();
 
 
+
+        
             address testlocationaddress
-         = 0x793f3338d13D4DB8AC607Efa9101012f3cb3bE5A;
+         = 0xFDB3D379ab844A402d8D3369077E074318b9Fa01;
         string memory testlocationname = "testname";
         string memory testtokenname = "testtoken";
         string memory testtokensymbol = "tt";
@@ -42,13 +44,16 @@ contract TestTokenManager3 {
 
 
             string memory expectedJson
-         = '[{"locationaddress":"0x793f3338d13D4DB8AC607Efa9101012f3cb3bE5A","locationname":"testname","tokenname":"testtoken","tokensymbol":"tt","token":0"}]';
+         ='[{"locationaddress":"0xfdb3d379ab844a402d8d3369077e074318b9fa01","locationname":"testname","tokenname":"testtoken","tokensymbol":"tt","token":0"}]';
 
         Assert.equal(
             expectedJson,
             povtoken.getUserTokenlist(testUserAddress),
             "failed"
         );
+
+  // Assert.equal(true,povtoken.compareStrings(expectedJson,povtoken.getUserTokenlist(testUserAddress)),"failed");
+
     }
 
     function setUpLocation(

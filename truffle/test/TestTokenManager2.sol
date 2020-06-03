@@ -45,6 +45,8 @@ contract TestTokenManager2 {
             povtoken.getAmountLocations(),
             "should be only 1 location"
         );
+
+     
     }
 
     function testCreateLocation3() public {

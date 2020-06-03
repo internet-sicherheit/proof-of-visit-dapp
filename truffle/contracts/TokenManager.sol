@@ -279,6 +279,13 @@ function addressToString(address _addr) public pure returns(string memory)
         }
         return string(str);
     }
+
+
+
+function char(byte b) public returns (byte c) {
+    if (uint8(b) < 10) return byte(uint8(b) + 0x30);
+    else return byte(uint8(b) + 0x57);
+}
    
 
     function int2str(uint256 _i)
