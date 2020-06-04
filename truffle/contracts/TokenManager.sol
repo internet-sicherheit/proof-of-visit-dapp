@@ -1,13 +1,8 @@
 pragma solidity ^0.5.16;
 
 
-
 contract TokenManager {
-    
-
-    constructor() public {
-        
-    }
+    constructor() public {}
 
     //Struct for a Location that wants to give out POV Tokens
     struct Location {
@@ -130,14 +125,12 @@ contract TokenManager {
         bool tokennameExists = false;
         bool tokensymbolExists = false;
 
-        //keccak256 is for comparing strings
+        ///checks if any of the given paramters are already in use
         for (uint256 i = 0; i < locations.length; i++) {
             if (locationaddresses[i] == _locationWalletAddress) {
                 locationExists = true;
             }
-            if (
-                compareStrings(locations[i].locationname, _locationname)
-            ) {
+            if (compareStrings(locations[i].locationname, _locationname)) {
                 locationnameExists = true;
             }
             if (compareStrings(locations[i].tokenname, _tokenname)) {
@@ -208,9 +201,9 @@ contract TokenManager {
 
         for (uint256 i = 0; i < povtokens.length; i++) {
             if (tokenIndexToOwnerAddress[i] == useraddress) {
-                 jsonObject = strConcat(jsonObject, "{");
+                jsonObject = strConcat(jsonObject, "{");
 
-                 jsonObject = strConcat(jsonObject, '"locationaddress":"');
+                jsonObject = strConcat(jsonObject, '"locationaddress":"');
                 jsonObject = strConcat(
                     jsonObject,
                     addressToString(getLocationAddressFromId(i))
@@ -247,10 +240,17 @@ contract TokenManager {
 
     //Helperfunctions __________________________________________________________________________________________
 
-    function compareStrings(string memory _a, string memory _b) private pure returns (bool) {
-        return (keccak256(abi.encodePacked((_a))) == keccak256(abi.encodePacked((_b))) );
+    //compares 2 strings
+    function compareStrings(string memory _a, string memory _b)
+        private
+        pure
+        returns (bool)
+    {
+        return (keccak256(abi.encodePacked((_a))) ==
+            keccak256(abi.encodePacked((_b))));
     }
 
+    //appends a string to another string
     function strConcat(string memory s1, string memory s2)
         public
         pure
@@ -259,6 +259,7 @@ contract TokenManager {
         return string(abi.encodePacked(s1, s2));
     }
 
+    //https://ethereum.stackexchange.com/a/8447
     function addressToString(address x) public pure returns (string memory) {
         bytes memory s = new bytes(42);
         s[0] = "0";
@@ -278,6 +279,7 @@ contract TokenManager {
         else return bytes1(uint8(b) + 0x57);
     }
 
+    //converts an int to string
     function int2str(uint256 _i)
         internal
         pure
@@ -301,7 +303,6 @@ contract TokenManager {
         return string(bstr);
     }
 }
-   
 
 
 contract ERC721 {
