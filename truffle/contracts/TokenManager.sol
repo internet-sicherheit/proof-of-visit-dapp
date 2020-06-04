@@ -1,8 +1,14 @@
 pragma solidity ^0.5.16;
 
+import "..//contracts/HelperFunctions.sol";
+
 
 contract TokenManager {
-    constructor() public {}
+    HelperFunctions helper;
+
+    constructor() public {
+        helper = new HelperFunctions();
+    }
 
     //Struct for a Location that wants to give out POV Tokens
     struct Location {
@@ -88,7 +94,8 @@ contract TokenManager {
         view
         returns (string memory)
     {
-        return getTokenSymbolFromLocationAddress(povtokens[_id].locationaddress);
+        return
+            getTokenSymbolFromLocationAddress(povtokens[_id].locationaddress);
     }
 
     function setLocationNameForId(uint256 _id, string memory _locationname)
@@ -106,8 +113,6 @@ contract TokenManager {
         view
         returns (address locationaddress)
     {
-
-     
         return povtokens[_id].locationaddress;
     }
 
@@ -126,28 +131,20 @@ contract TokenManager {
         bool tokennameExists = false;
         bool tokensymbolExists = false;
 
-
-//keccak256 is for comparing strings
+        //keccak256 is for comparing strings
         for (uint256 i = 0; i < locations.length; i++) {
             if (locationaddresses[i] == _locationWalletAddress) {
                 locationExists = true;
             }
             if (
-                keccak256(bytes(locations[i].locationname)) ==
-                keccak256(bytes(_locationname))
+                helper.compareStrings(locations[i].locationname, _locationname)
             ) {
                 locationnameExists = true;
             }
-            if (
-                keccak256(bytes(locations[i].tokenname)) ==
-                keccak256(bytes(_tokenname))
-            ) {
+            if (helper.compareStrings(locations[i].tokenname, _tokenname)) {
                 tokennameExists = true;
             }
-            if (
-                keccak256(bytes(locations[i].tokensymbol)) ==
-                keccak256(bytes(_tokensymbol))
-            ) {
+            if (helper.compareStrings(locations[i].tokensymbol, _tokensymbol)) {
                 tokensymbolExists = true;
             }
         }
@@ -201,58 +198,55 @@ contract TokenManager {
         ownershipTokenCount[_requestaddress]++;
     }
 
+    //This function gets called from the userapp and returns a JsonObject containing all the information of the tokens a user(address) owns.
+    //The final representation is done by the app itself
     function getUserTokenlist(address useraddress)
         public
         view
         returns (string memory jsonTokenList)
     {
-        string memory jsonObject = "[";
+        string memory jsonObject = "";
 
         for (uint256 i = 0; i < povtokens.length; i++) {
             if (tokenIndexToOwnerAddress[i] == useraddress) {
-                jsonObject = strConcat(jsonObject, "{");
+                // jsonObject = strConcat(jsonObject, "{");
 
-                jsonObject = strConcat(jsonObject, '"locationaddress":"');
-                jsonObject = strConcat(jsonObject, addressToString(getLocationAddressFromId(i)));
-                jsonObject = strConcat(jsonObject, '",');
+                // jsonObject = strConcat(jsonObject, '"locationaddress":"');
+                jsonObject = strConcat(
+                    jsonObject,
+                    addressToString(getLocationAddressFromId(i))
+                );
+                // jsonObject = strConcat(jsonObject, '",');
 
-                jsonObject = strConcat(jsonObject, '"locationname":"');
-                jsonObject = strConcat(jsonObject, getLocationNameFromId(i));
-                jsonObject = strConcat(jsonObject, '",');
+                // jsonObject = strConcat(jsonObject, '"locationname":"');
+                // jsonObject = strConcat(jsonObject, getLocationNameFromId(i));
+                // jsonObject = strConcat(jsonObject, '",');
 
-                jsonObject = strConcat(jsonObject, '"tokenname":"');
-                jsonObject = strConcat(jsonObject, getTokenNameFromId(i));
-                jsonObject = strConcat(jsonObject, '",');
+                // jsonObject = strConcat(jsonObject, '"tokenname":"');
+                // jsonObject = strConcat(jsonObject, getTokenNameFromId(i));
+                // jsonObject = strConcat(jsonObject, '",');
 
-                jsonObject = strConcat(jsonObject, '"tokensymbol":"');
-                jsonObject = strConcat(jsonObject, getTokenSymbolFromId(i));
-                jsonObject = strConcat(jsonObject, '",');
+                // jsonObject = strConcat(jsonObject, '"tokensymbol":"');
+                // jsonObject = strConcat(jsonObject, getTokenSymbolFromId(i));
+                // jsonObject = strConcat(jsonObject, '",');
 
-                jsonObject = strConcat(jsonObject, '"token":');
-                jsonObject = strConcat(jsonObject, int2str(i));
+                // jsonObject = strConcat(jsonObject, '"token":');
+                // jsonObject = strConcat(jsonObject, int2str(i));
 
-                if (i == povtokens.length - 1) {
-                    jsonObject = strConcat(jsonObject, '"}');
-                } else {
-                    jsonObject = strConcat(jsonObject, '"},');
-                }
+                // if (i == povtokens.length - 1) {
+                //     jsonObject = strConcat(jsonObject, '"}');
+                // } else {
+                //     jsonObject = strConcat(jsonObject, '"},');
+                // }
             }
 
-            jsonObject = strConcat(jsonObject, "]");
+            //jsonObject = strConcat(jsonObject, "]");
         }
 
         return jsonObject;
     }
 
     //-------------------
-    function compareStrings(string memory _a, string memory _b)
-        private
-        pure
-        returns (bool)
-    {
-        return (keccak256(abi.encodePacked((_a))) ==
-            keccak256(abi.encodePacked((_b))));
-    }
 
     function strConcat(string memory s1, string memory s2)
         public
@@ -262,29 +256,65 @@ contract TokenManager {
         return string(abi.encodePacked(s1, s2));
     }
 
+    // function addressToString(address _addr)
+    //     public
+    //     pure
+    //     returns (string memory)
+    // {
+    //     bytes32 value = bytes32(uint256(_addr));
+    //     bytes memory alphabet = "0123456789abcdef";
 
+    //     bytes memory str = new bytes(51);
+    //     str[0] = "0";
+    //     str[1] = "x";
+    //     for (uint256 i = 0; i < 20; i++) {
+    //         str[2 + i * 2] = alphabet[uint8(value[i + 12] >> 4)];
+    //         str[3 + i * 2] = alphabet[uint8(value[i + 12] & 0x0f)];
+    //     }
+    //     return string(str);
+    // }
 
-
-function addressToString(address _addr) public pure returns(string memory) 
-    {
-        bytes32 value = bytes32(uint256(_addr));
-        bytes memory alphabet = "0123456789abcdef";
-
-        bytes memory str = new bytes(51);
-        str[0] = '0';
-        str[1] = 'x';
+    function addressToString(address x) public pure returns (string memory) {
+        bytes memory s = new bytes(42);
+        s[0] = "0";
+        s[1] = "x";
         for (uint256 i = 0; i < 20; i++) {
-            str[2+i*2] = alphabet[uint8(value[i + 12] >> 4)];
-            str[3+i*2] = alphabet[uint8(value[i + 12] & 0x0f)];
+            bytes1 b = bytes1(uint8(uint256(x) / (2**(8 * (19 - i)))));
+            bytes1 hi = bytes1(uint8(b) / 16);
+            bytes1 lo = bytes1(uint8(b) - 16 * uint8(hi));
+            s[2 + 2 * i] = char(hi);
+            s[3 + 2 * i] = char(lo);
         }
-        return string(str);
+        return string(s);
     }
 
+    function char(bytes1 b) public pure returns (bytes1 c) {
+        if (uint8(b) < 10) return bytes1(uint8(b) + 0x30);
+        else return bytes1(uint8(b) + 0x57);
+    }
 
-
-function char(byte b) public returns (byte c) {
-    if (uint8(b) < 10) return byte(uint8(b) + 0x30);
-    else return byte(uint8(b) + 0x57);
+    function int2str(uint256 _i)
+        internal
+        pure
+        returns (string memory _uintAsString)
+    {
+        if (_i == 0) {
+            return "0";
+        }
+        uint256 j = _i;
+        uint256 len;
+        while (j != 0) {
+            len++;
+            j /= 10;
+        }
+        bytes memory bstr = new bytes(len);
+        uint256 k = len - 1;
+        while (_i != 0) {
+            bstr[k--] = bytes1(uint8(48 + (_i % 10)));
+            _i /= 10;
+        }
+        return string(bstr);
+    }
 }
    
 
@@ -311,7 +341,6 @@ function char(byte b) public returns (byte c) {
         return string(bstr);
     }
 }
-
 
 contract ERC721 {
     // Required methods
