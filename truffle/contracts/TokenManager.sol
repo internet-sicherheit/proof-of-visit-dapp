@@ -1,13 +1,12 @@
 pragma solidity ^0.5.16;
 
-import "..//contracts/HelperFunctions.sol";
 
 
 contract TokenManager {
-    HelperFunctions helper;
+    
 
     constructor() public {
-        helper = new HelperFunctions();
+        
     }
 
     //Struct for a Location that wants to give out POV Tokens
@@ -137,14 +136,14 @@ contract TokenManager {
                 locationExists = true;
             }
             if (
-                helper.compareStrings(locations[i].locationname, _locationname)
+                compareStrings(locations[i].locationname, _locationname)
             ) {
                 locationnameExists = true;
             }
-            if (helper.compareStrings(locations[i].tokenname, _tokenname)) {
+            if (compareStrings(locations[i].tokenname, _tokenname)) {
                 tokennameExists = true;
             }
-            if (helper.compareStrings(locations[i].tokensymbol, _tokensymbol)) {
+            if (compareStrings(locations[i].tokensymbol, _tokensymbol)) {
                 tokensymbolExists = true;
             }
         }
@@ -205,48 +204,52 @@ contract TokenManager {
         view
         returns (string memory jsonTokenList)
     {
-        string memory jsonObject = "";
+        string memory jsonObject = "[";
 
         for (uint256 i = 0; i < povtokens.length; i++) {
             if (tokenIndexToOwnerAddress[i] == useraddress) {
-                // jsonObject = strConcat(jsonObject, "{");
+                 jsonObject = strConcat(jsonObject, "{");
 
-                // jsonObject = strConcat(jsonObject, '"locationaddress":"');
+                 jsonObject = strConcat(jsonObject, '"locationaddress":"');
                 jsonObject = strConcat(
                     jsonObject,
                     addressToString(getLocationAddressFromId(i))
                 );
-                // jsonObject = strConcat(jsonObject, '",');
+                jsonObject = strConcat(jsonObject, '",');
 
-                // jsonObject = strConcat(jsonObject, '"locationname":"');
-                // jsonObject = strConcat(jsonObject, getLocationNameFromId(i));
-                // jsonObject = strConcat(jsonObject, '",');
+                jsonObject = strConcat(jsonObject, '"locationname":"');
+                jsonObject = strConcat(jsonObject, getLocationNameFromId(i));
+                jsonObject = strConcat(jsonObject, '",');
 
-                // jsonObject = strConcat(jsonObject, '"tokenname":"');
-                // jsonObject = strConcat(jsonObject, getTokenNameFromId(i));
-                // jsonObject = strConcat(jsonObject, '",');
+                jsonObject = strConcat(jsonObject, '"tokenname":"');
+                jsonObject = strConcat(jsonObject, getTokenNameFromId(i));
+                jsonObject = strConcat(jsonObject, '",');
 
-                // jsonObject = strConcat(jsonObject, '"tokensymbol":"');
-                // jsonObject = strConcat(jsonObject, getTokenSymbolFromId(i));
-                // jsonObject = strConcat(jsonObject, '",');
+                jsonObject = strConcat(jsonObject, '"tokensymbol":"');
+                jsonObject = strConcat(jsonObject, getTokenSymbolFromId(i));
+                jsonObject = strConcat(jsonObject, '",');
 
-                // jsonObject = strConcat(jsonObject, '"token":');
-                // jsonObject = strConcat(jsonObject, int2str(i));
+                jsonObject = strConcat(jsonObject, '"token":');
+                jsonObject = strConcat(jsonObject, int2str(i));
 
-                // if (i == povtokens.length - 1) {
-                //     jsonObject = strConcat(jsonObject, '"}');
-                // } else {
-                //     jsonObject = strConcat(jsonObject, '"},');
-                // }
+                if (i == povtokens.length - 1) {
+                    jsonObject = strConcat(jsonObject, '"}');
+                } else {
+                    jsonObject = strConcat(jsonObject, '"},');
+                }
             }
 
-            //jsonObject = strConcat(jsonObject, "]");
+            jsonObject = strConcat(jsonObject, "]");
         }
 
         return jsonObject;
     }
 
-    //-------------------
+    //Helperfunctions __________________________________________________________________________________________
+
+    function compareStrings(string memory _a, string memory _b) private pure returns (bool) {
+        return (keccak256(abi.encodePacked((_a))) == keccak256(abi.encodePacked((_b))) );
+    }
 
     function strConcat(string memory s1, string memory s2)
         public
@@ -255,24 +258,6 @@ contract TokenManager {
     {
         return string(abi.encodePacked(s1, s2));
     }
-
-    // function addressToString(address _addr)
-    //     public
-    //     pure
-    //     returns (string memory)
-    // {
-    //     bytes32 value = bytes32(uint256(_addr));
-    //     bytes memory alphabet = "0123456789abcdef";
-
-    //     bytes memory str = new bytes(51);
-    //     str[0] = "0";
-    //     str[1] = "x";
-    //     for (uint256 i = 0; i < 20; i++) {
-    //         str[2 + i * 2] = alphabet[uint8(value[i + 12] >> 4)];
-    //         str[3 + i * 2] = alphabet[uint8(value[i + 12] & 0x0f)];
-    //     }
-    //     return string(str);
-    // }
 
     function addressToString(address x) public pure returns (string memory) {
         bytes memory s = new bytes(42);
@@ -318,29 +303,6 @@ contract TokenManager {
 }
    
 
-    function int2str(uint256 _i)
-        internal
-        pure
-        returns (string memory _uintAsString)
-    {
-        if (_i == 0) {
-            return "0";
-        }
-        uint256 j = _i;
-        uint256 len;
-        while (j != 0) {
-            len++;
-            j /= 10;
-        }
-        bytes memory bstr = new bytes(len);
-        uint256 k = len - 1;
-        while (_i != 0) {
-            bstr[k--] = bytes1(uint8(48 + (_i % 10)));
-            _i /= 10;
-        }
-        return string(bstr);
-    }
-}
 
 contract ERC721 {
     // Required methods
