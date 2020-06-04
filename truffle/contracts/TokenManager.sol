@@ -1,87 +1,92 @@
 pragma solidity ^0.5.16;
 
-import "..//contracts/HelperFunctions.sol";
 
 
 contract TokenManager {
-    HelperFunctions helper;
+    
 
     constructor() public {
-        helper = new HelperFunctions();
+        
     }
 
     //Struct for a Location that wants to give out POV Tokens
-    struct Location{
-        
+    struct Location {
         string tokenname;
         string tokensymbol;
         string locationname;
         address locationaddress;
-        uint256 locationID;
-        
     }
-    
 
     //Struct data for all POV-Tokens in existence
-    struct PovToken{
-       
-	  
+    struct PovToken {
         string locationname;
         address locationaddress;
-        uint256 locationID;
-  
-	
-
     }
 
+    //Storage for all Locations
+    Location[] public locations;
 
-    //Storage for all Locations 
-     Location[] public locations;
-    
     //Storage for all tokens from all locations in existence
-     PovToken [] public povtokens;
+    PovToken[] public povtokens;
 
+    address[] public locationaddresses;
 
-   
-   //hashmaps
-      
+    //hashmaps
+
     //This mapping represents which Index of the povtokens map is owned by who (address)
     //ID is basically the same as the INDEX!! (as far as i understand)
-    mapping (uint256 => address) public tokenIndexToOwner;
-    
+    mapping(uint256 => address) public tokenIndexToOwnerAddress;
 
-   
-   //this mapping represents which location an token has
-    mapping(uint256 => uint256) public tokenIndexToLocationIndex;
-    
+    mapping(address => uint256) public ownerAddressToLocationIndex;
+
     //used to see the total tokens of an address (needed for ERC721)
-    mapping (address => uint256) public ownershipTokenCount;
-    
+    mapping(address => uint256) public ownershipTokenCount;
+
     mapping(uint256 => string) public locationIDtoLocationName;
 
- function getLocationNameFromId(uint256 _id) public view returns  (string memory)
+    //getters and setters for testing
+
+    //theses getters are for the Struct Location, because you can't return a stuct to another contract in solidity
+    function getLocationNameFromLocationAddress(address _address)
+        public
+        view
+        returns (string memory locationname)
     {
-        return locationIDtoLocationName[_id];
+        return locations[ownerAddressToLocationIndex[_address]].locationname;
     }
 
-  function setLocationNameForId(uint256 _id, string memory _locationname) public 
+    function getTokenSymbolFromLocationAddress(address _address)
+        public
+        view
+        returns (string memory tokensymbol)
     {
-        locationIDtoLocationName[_id] = _locationname;
+        return locations[ownerAddressToLocationIndex[_address]].tokensymbol;
     }
-    
 
-//just for testing can be removed later
-function addToken(string memory _locationname, address _locationaddress, uint256 _locationId) public
-{
+    function getTokennamefromLocationAddress(address _address)
+        public
+        view
+        returns (string memory tokenname)
+    {
+        return locations[ownerAddressToLocationIndex[_address]].tokenname;
+    }
 
+    //gives the name of the location from given token
+    function getLocationNameFromId(uint256 _id)
+        public
+        view
+        returns (string memory locationname)
+    {
+        return povtokens[_id].locationname;
+    }
 
-        PovToken memory _newpovtoken = PovToken({
-       
-            locationname: _locationname,
-            locationaddress: _locationaddress,
-            locationID: _locationId
-            
-        });
+    function getTokenNameFromId(uint256 _id)
+        public
+        view
+        returns (string memory)
+    {
+        return getTokennamefromLocationAddress(povtokens[_id].locationaddress);
+    }
 
     function getTokenSymbolFromId(uint256 _id)
         public
@@ -92,9 +97,15 @@ function addToken(string memory _locationname, address _locationaddress, uint256
             getTokenSymbolFromLocationAddress(povtokens[_id].locationaddress);
     }
 
-}
+    function setLocationNameForId(uint256 _id, string memory _locationname)
+        public
+    {
+        locationIDtoLocationName[_id] = _locationname;
+    }
 
-    
+    function getAmountLocations() public view returns (uint256 amount) {
+        return locations.length;
+    }
 
     function getLocationAddressFromId(uint256 _id)
         public
@@ -107,33 +118,17 @@ function addToken(string memory _locationname, address _locationaddress, uint256
     //end
 
     //creates a new location that can give out tokens to visitors, e.g. "IFIS-Token, Institut für Internetsicherheit"
-    
-    function createLocation(string calldata _tokenname, string calldata _tokensymbol, string calldata _locationname, address _locationWalletAddress ) external returns (uint256)  {
-      
-      //id of the next open Index of LocationArray
-      uint256 _newLocationID = locations.length; 
-      
-         Location memory _newLocation = Location({
-          
-          tokenname: _tokenname,
-          tokensymbol: _tokensymbol,
-          locationname: _locationname,
-          locationaddress: _locationWalletAddress,
-          locationID: _newLocationID
-          
-        });
-        
-        
-        //adds the location to the location array
-        locations.push(_newLocation);
-        
-        locationIDtoLocationName[_newLocationID] = _locationname;
-        
-        //returns the locationID for the creator of the location
-        return _newLocationID;
-      
-  }
 
+    function createLocation(
+        string calldata _tokenname,
+        string calldata _tokensymbol,
+        string calldata _locationname,
+        address _locationWalletAddress
+    ) external returns (uint256) {
+        bool locationExists = false;
+        bool locationnameExists = false;
+        bool tokennameExists = false;
+        bool tokensymbolExists = false;
 
         //keccak256 is for comparing strings
         for (uint256 i = 0; i < locations.length; i++) {
@@ -141,14 +136,14 @@ function addToken(string memory _locationname, address _locationaddress, uint256
                 locationExists = true;
             }
             if (
-                helper.compareStrings(locations[i].locationname, _locationname)
+                compareStrings(locations[i].locationname, _locationname)
             ) {
                 locationnameExists = true;
             }
-            if (helper.compareStrings(locations[i].tokenname, _tokenname)) {
+            if (compareStrings(locations[i].tokenname, _tokenname)) {
                 tokennameExists = true;
             }
-            if (helper.compareStrings(locations[i].tokensymbol, _tokensymbol)) {
+            if (compareStrings(locations[i].tokensymbol, _tokensymbol)) {
                 tokensymbolExists = true;
             }
         }
@@ -178,32 +173,29 @@ function addToken(string memory _locationname, address _locationaddress, uint256
     }
 
     //Generates a Token for a Location and sets the requestsaddress as the owner, gets called when Visitor wants a Token from Admin
-    //returns the Id of the token for the requestsaddress
-    //locationaddress is currently unused but may be used in later implementations
 
-    function requestToken(uint256 _locationID, address _locationaddress, address _requestaddress) external{
-    
- 
+    //locationId and locationaddress is given by admin
+
+    //the function should return the tokenID to Admin to give it to requester. Right know i don't know how to do that
+
+    function requestToken(address _locationaddress, address _requestaddress)
+        external
+    {
         PovToken memory _newpovtoken = PovToken({
-       
-            locationname: locationIDtoLocationName[_locationID],
-            locationaddress: _locationaddress,
-            locationID: _locationID
-            
+            locationname: locations[ownerAddressToLocationIndex[_locationaddress]]
+                .locationname,
+            locationaddress: _locationaddress
         });
-    
-    
+
         //safes token to public manager array
-        uint256 newTokenId = povtokens.push(_newpovtoken) -1;
-    
-        //safes this tokenindex to given locationindex (hashmap)
-        tokenIndexToLocationIndex[newTokenId] = _locationID;
-     
+        uint256 newTokenId = povtokens.push(_newpovtoken) - 1;
+
         //sets requestsaddress as owner of token
-        tokenIndexToOwner[newTokenId] = _requestaddress;
-        
+        tokenIndexToOwnerAddress[newTokenId] = _requestaddress;
+
         //ups the totalBalance of address
         ownershipTokenCount[_requestaddress]++;
+    }
 
     //This function gets called from the userapp and returns a JsonObject containing all the information of the tokens a user(address) owns.
     //The final representation is done by the app itself
@@ -212,48 +204,52 @@ function addToken(string memory _locationname, address _locationaddress, uint256
         view
         returns (string memory jsonTokenList)
     {
-        string memory jsonObject = "";
+        string memory jsonObject = "[";
 
         for (uint256 i = 0; i < povtokens.length; i++) {
             if (tokenIndexToOwnerAddress[i] == useraddress) {
-                // jsonObject = strConcat(jsonObject, "{");
+                 jsonObject = strConcat(jsonObject, "{");
 
-                // jsonObject = strConcat(jsonObject, '"locationaddress":"');
+                 jsonObject = strConcat(jsonObject, '"locationaddress":"');
                 jsonObject = strConcat(
                     jsonObject,
                     addressToString(getLocationAddressFromId(i))
                 );
-                // jsonObject = strConcat(jsonObject, '",');
+                jsonObject = strConcat(jsonObject, '",');
 
-                // jsonObject = strConcat(jsonObject, '"locationname":"');
-                // jsonObject = strConcat(jsonObject, getLocationNameFromId(i));
-                // jsonObject = strConcat(jsonObject, '",');
+                jsonObject = strConcat(jsonObject, '"locationname":"');
+                jsonObject = strConcat(jsonObject, getLocationNameFromId(i));
+                jsonObject = strConcat(jsonObject, '",');
 
-                // jsonObject = strConcat(jsonObject, '"tokenname":"');
-                // jsonObject = strConcat(jsonObject, getTokenNameFromId(i));
-                // jsonObject = strConcat(jsonObject, '",');
+                jsonObject = strConcat(jsonObject, '"tokenname":"');
+                jsonObject = strConcat(jsonObject, getTokenNameFromId(i));
+                jsonObject = strConcat(jsonObject, '",');
 
-                // jsonObject = strConcat(jsonObject, '"tokensymbol":"');
-                // jsonObject = strConcat(jsonObject, getTokenSymbolFromId(i));
-                // jsonObject = strConcat(jsonObject, '",');
+                jsonObject = strConcat(jsonObject, '"tokensymbol":"');
+                jsonObject = strConcat(jsonObject, getTokenSymbolFromId(i));
+                jsonObject = strConcat(jsonObject, '",');
 
-                // jsonObject = strConcat(jsonObject, '"token":');
-                // jsonObject = strConcat(jsonObject, int2str(i));
+                jsonObject = strConcat(jsonObject, '"token":');
+                jsonObject = strConcat(jsonObject, int2str(i));
 
-                // if (i == povtokens.length - 1) {
-                //     jsonObject = strConcat(jsonObject, '"}');
-                // } else {
-                //     jsonObject = strConcat(jsonObject, '"},');
-                // }
+                if (i == povtokens.length - 1) {
+                    jsonObject = strConcat(jsonObject, '"}');
+                } else {
+                    jsonObject = strConcat(jsonObject, '"},');
+                }
             }
 
-            //jsonObject = strConcat(jsonObject, "]");
+            jsonObject = strConcat(jsonObject, "]");
         }
 
         return jsonObject;
     }
 
-    //-------------------
+    //Helperfunctions __________________________________________________________________________________________
+
+    function compareStrings(string memory _a, string memory _b) private pure returns (bool) {
+        return (keccak256(abi.encodePacked((_a))) == keccak256(abi.encodePacked((_b))) );
+    }
 
     function strConcat(string memory s1, string memory s2)
         public
@@ -262,24 +258,6 @@ function addToken(string memory _locationname, address _locationaddress, uint256
     {
         return string(abi.encodePacked(s1, s2));
     }
-
-    // function addressToString(address _addr)
-    //     public
-    //     pure
-    //     returns (string memory)
-    // {
-    //     bytes32 value = bytes32(uint256(_addr));
-    //     bytes memory alphabet = "0123456789abcdef";
-
-    //     bytes memory str = new bytes(51);
-    //     str[0] = "0";
-    //     str[1] = "x";
-    //     for (uint256 i = 0; i < 20; i++) {
-    //         str[2 + i * 2] = alphabet[uint8(value[i + 12] >> 4)];
-    //         str[3 + i * 2] = alphabet[uint8(value[i + 12] & 0x0f)];
-    //     }
-    //     return string(str);
-    // }
 
     function addressToString(address x) public pure returns (string memory) {
         bytes memory s = new bytes(42);
@@ -323,16 +301,26 @@ function addToken(string memory _locationname, address _locationaddress, uint256
         return string(bstr);
     }
 }
+   
 
 
 contract ERC721 {
     // Required methods
     function totalSupply() public view returns (uint256 total);
+
     function balanceOf(address _owner) public view returns (uint256 balance);
+
     function ownerOf(uint256 _tokenId) external view returns (address owner);
+
     function approve(address _to, uint256 _tokenId) external;
+
     function transfer(address _to, uint256 _tokenId) external;
-    function transferFrom(address _from, address _to, uint256 _tokenId) external;
+
+    function transferFrom(
+        address _from,
+        address _to,
+        uint256 _tokenId
+    ) external;
 
     // Events
     event Transfer(address from, address to, uint256 tokenId);
@@ -345,101 +333,60 @@ contract ERC721 {
     // function tokenMetadata(uint256 _tokenId, string _preferredTransport) public view returns (string infoUrl);
 
     // ERC-165 Compatibility (https://github.com/ethereum/EIPs/issues/165)
-    function supportsInterface(bytes4 _interfaceID) external view returns (bool);
+    function supportsInterface(bytes4 _interfaceID)
+        external
+        view
+        returns (bool);
 }
 
 
-
-
 contract POVToken is TokenManager, ERC721 {
-    
-   
-    
- 
-    
-     function totalSupply() public view returns (uint) {
-        return povtokens.length ;
+    function totalSupply() public view returns (uint256) {
+        return povtokens.length;
     }
-    
-    
-    
-    
-       function totalSupplyLocations() public view returns (uint) {
-        return locations.length ;
+
+    function totalSupplyLocations() public view returns (uint256) {
+        return locations.length;
     }
-    
-  
-    
- 
-    
-    
-  
-     function ownerOf(uint256 _tokenID) external view returns (address owner){
-         
-         return tokenIndexToOwner[_tokenID];
-  
-     }
-     
-  
-   function balanceOf(address _owner) public view returns (uint256 balance)
-   {
-       
-       return ownershipTokenCount[_owner];
-       
-   }
-   
-   
-   //gives the name of the location from given token
-   function locationNameOfToken(uint256 _tokenID) public view returns (string memory 
-locationname)
-   {
-    
-      return locations[tokenIndexToLocationIndex[_tokenID]].locationname;
-  
-   }
-    
-    
-    
-    
-    
-     // |1| Right now there is no plans to send or interchange tokens after the owner is declared. It's self-explanatory because a Token is a Proof of Visit, you can't give your "visit" to someone else
-     
-     //Events
+
+    function ownerOf(uint256 _tokenID) external view returns (address owner) {
+        return tokenIndexToOwnerAddress[_tokenID];
+    }
+
+    function balanceOf(address _owner) public view returns (uint256 balance) {
+        return ownershipTokenCount[_owner];
+    }
+
+    // |1| Right now there is no plans to send or interchange tokens after the owner is declared. It's self-explanatory because a Token is a Proof of Visit, you can't give your "visit" to someone else
+
+    //Events
     event Transfer(address from, address to, uint256 tokenId);
     event Approval(address owner, address approved, uint256 tokenId);
-     
-    //See |1|
-    function  transfer(address requestaddress, uint256 _tokenId) external {
-         
-        
-        emit Transfer(msg.sender, requestaddress, _tokenId);
 
-    }
-     
     //See |1|
-    function approve(address _to, uint256 _tokenId) external
-    {
-        
-       
+    function transfer(address requestaddress, uint256 _tokenId) external {
+        emit Transfer(msg.sender, requestaddress, _tokenId);
+    }
+
+    //See |1|
+    function approve(address _to, uint256 _tokenId) external {
         emit Approval(msg.sender, _to, _tokenId);
     }
-     
-    //See |1|
-    function transferFrom(address _from, address _to, uint256 _tokenId) external
-    {
-          
-       
-        emit Transfer(_from, _to, _tokenId);
-          
-    }
-    
-    
-   function supportsInterface(bytes4 _interfaceID) external view returns (bool){
-        
-       return true;
-   }
-    
-    
-   
 
+    //See |1|
+    function transferFrom(
+        address _from,
+        address _to,
+        uint256 _tokenId
+    ) external {
+        emit Transfer(_from, _to, _tokenId);
+    }
+
+    function supportsInterface(bytes4 _interfaceID)
+        external
+        view
+        returns (bool)
+    {
+        return true;
+    }
 }
