@@ -1,10 +1,14 @@
 pragma solidity ^0.5.16;
 
-    contract TokenManager{
-        
-        constructor() public {
-            
-        }
+import "..//contracts/HelperFunctions.sol";
+
+
+contract TokenManager {
+    HelperFunctions helper;
+
+    constructor() public {
+        helper = new HelperFunctions();
+    }
 
     //Struct for a Location that wants to give out POV Tokens
     struct Location{
@@ -79,11 +83,28 @@ function addToken(string memory _locationname, address _locationaddress, uint256
             
         });
 
-povtokens.push(_newpovtoken);
+    function getTokenSymbolFromId(uint256 _id)
+        public
+        view
+        returns (string memory)
+    {
+        return
+            getTokenSymbolFromLocationAddress(povtokens[_id].locationaddress);
+    }
 
 }
 
     
+
+    function getLocationAddressFromId(uint256 _id)
+        public
+        view
+        returns (address locationaddress)
+    {
+        return povtokens[_id].locationaddress;
+    }
+
+    //end
 
     //creates a new location that can give out tokens to visitors, e.g. "IFIS-Token, Institut für Internetsicherheit"
     
@@ -114,10 +135,48 @@ povtokens.push(_newpovtoken);
   }
 
 
+        //keccak256 is for comparing strings
+        for (uint256 i = 0; i < locations.length; i++) {
+            if (locationaddresses[i] == _locationWalletAddress) {
+                locationExists = true;
+            }
+            if (
+                helper.compareStrings(locations[i].locationname, _locationname)
+            ) {
+                locationnameExists = true;
+            }
+            if (helper.compareStrings(locations[i].tokenname, _tokenname)) {
+                tokennameExists = true;
+            }
+            if (helper.compareStrings(locations[i].tokensymbol, _tokensymbol)) {
+                tokensymbolExists = true;
+            }
+        }
 
-  
-  
-  
+        //missing else statements for caller to know what the error is
+        if (
+            locations.length == 0 ||
+            (locationExists == false &&
+                locationnameExists == false &&
+                tokennameExists == false &&
+                tokensymbolExists == false)
+        ) {
+            Location memory _newLocation = Location({
+                tokenname: _tokenname,
+                tokensymbol: _tokensymbol,
+                locationname: _locationname,
+                locationaddress: _locationWalletAddress
+            });
+
+            //adds the location to the location array
+            locations.push(_newLocation);
+            locationaddresses.push(_locationWalletAddress);
+            ownerAddressToLocationIndex[_locationWalletAddress] =
+                locations.length -
+                1;
+        }
+    }
+
     //Generates a Token for a Location and sets the requestsaddress as the owner, gets called when Visitor wants a Token from Admin
     //returns the Id of the token for the requestsaddress
     //locationaddress is currently unused but may be used in later implementations
@@ -146,12 +205,124 @@ povtokens.push(_newpovtoken);
         //ups the totalBalance of address
         ownershipTokenCount[_requestaddress]++;
 
+    //This function gets called from the userapp and returns a JsonObject containing all the information of the tokens a user(address) owns.
+    //The final representation is done by the app itself
+    function getUserTokenlist(address useraddress)
+        public
+        view
+        returns (string memory jsonTokenList)
+    {
+        string memory jsonObject = "";
+
+        for (uint256 i = 0; i < povtokens.length; i++) {
+            if (tokenIndexToOwnerAddress[i] == useraddress) {
+                // jsonObject = strConcat(jsonObject, "{");
+
+                // jsonObject = strConcat(jsonObject, '"locationaddress":"');
+                jsonObject = strConcat(
+                    jsonObject,
+                    addressToString(getLocationAddressFromId(i))
+                );
+                // jsonObject = strConcat(jsonObject, '",');
+
+                // jsonObject = strConcat(jsonObject, '"locationname":"');
+                // jsonObject = strConcat(jsonObject, getLocationNameFromId(i));
+                // jsonObject = strConcat(jsonObject, '",');
+
+                // jsonObject = strConcat(jsonObject, '"tokenname":"');
+                // jsonObject = strConcat(jsonObject, getTokenNameFromId(i));
+                // jsonObject = strConcat(jsonObject, '",');
+
+                // jsonObject = strConcat(jsonObject, '"tokensymbol":"');
+                // jsonObject = strConcat(jsonObject, getTokenSymbolFromId(i));
+                // jsonObject = strConcat(jsonObject, '",');
+
+                // jsonObject = strConcat(jsonObject, '"token":');
+                // jsonObject = strConcat(jsonObject, int2str(i));
+
+                // if (i == povtokens.length - 1) {
+                //     jsonObject = strConcat(jsonObject, '"}');
+                // } else {
+                //     jsonObject = strConcat(jsonObject, '"},');
+                // }
+            }
+
+            //jsonObject = strConcat(jsonObject, "]");
+        }
+
+        return jsonObject;
+    }
+
+    //-------------------
+
+    function strConcat(string memory s1, string memory s2)
+        public
+        pure
+        returns (string memory)
+    {
+        return string(abi.encodePacked(s1, s2));
+    }
+
+    // function addressToString(address _addr)
+    //     public
+    //     pure
+    //     returns (string memory)
+    // {
+    //     bytes32 value = bytes32(uint256(_addr));
+    //     bytes memory alphabet = "0123456789abcdef";
+
+    //     bytes memory str = new bytes(51);
+    //     str[0] = "0";
+    //     str[1] = "x";
+    //     for (uint256 i = 0; i < 20; i++) {
+    //         str[2 + i * 2] = alphabet[uint8(value[i + 12] >> 4)];
+    //         str[3 + i * 2] = alphabet[uint8(value[i + 12] & 0x0f)];
+    //     }
+    //     return string(str);
+    // }
+
+    function addressToString(address x) public pure returns (string memory) {
+        bytes memory s = new bytes(42);
+        s[0] = "0";
+        s[1] = "x";
+        for (uint256 i = 0; i < 20; i++) {
+            bytes1 b = bytes1(uint8(uint256(x) / (2**(8 * (19 - i)))));
+            bytes1 hi = bytes1(uint8(b) / 16);
+            bytes1 lo = bytes1(uint8(b) - 16 * uint8(hi));
+            s[2 + 2 * i] = char(hi);
+            s[3 + 2 * i] = char(lo);
+        }
+        return string(s);
+    }
+
+    function char(bytes1 b) public pure returns (bytes1 c) {
+        if (uint8(b) < 10) return bytes1(uint8(b) + 0x30);
+        else return bytes1(uint8(b) + 0x57);
+    }
+
+    function int2str(uint256 _i)
+        internal
+        pure
+        returns (string memory _uintAsString)
+    {
+        if (_i == 0) {
+            return "0";
+        }
+        uint256 j = _i;
+        uint256 len;
+        while (j != 0) {
+            len++;
+            j /= 10;
+        }
+        bytes memory bstr = new bytes(len);
+        uint256 k = len - 1;
+        while (_i != 0) {
+            bstr[k--] = bytes1(uint8(48 + (_i % 10)));
+            _i /= 10;
+        }
+        return string(bstr);
+    }
 }
-
-
-
-}
-
 
 
 contract ERC721 {
