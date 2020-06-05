@@ -47,9 +47,18 @@ public class LocationSettingsFragment extends Fragment {
         findViewById(view);
 
         if(MainActivity.walletManager.isDirectoryEmpty()) {
+            
             setAllInvisible();
+
         } else {
+
             infoTv.setVisibility(View.INVISIBLE);
+
+            if(!MainActivity.sharedPref.getString(SharedPref.SHAREDPREFERENCES_LOCATION_NANME).equals(SharedPref.SHAREDPREFERENCES_DEFAULT_VALUE)) {
+                locationNameInput.setText(MainActivity.sharedPref.getString(SharedPref.SHAREDPREFERENCES_LOCATION_NANME));
+                tokenNameInput.setText(MainActivity.sharedPref.getString(SharedPref.SHAREDPREFERENCES_TOKEN_NAME));
+                tokenSymbolInput.setText(MainActivity.sharedPref.getString(SharedPref.SHAREDPREFERENCES_TOKEN_SYMBOL));
+            }
         }
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
