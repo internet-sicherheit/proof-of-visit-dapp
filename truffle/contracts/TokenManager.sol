@@ -233,14 +233,14 @@ contract TokenManager {
                 jsonObject = strConcat(jsonObject, int2str(i));
 
                 if (i == povtokens.length - 1) {
-                    jsonObject = strConcat(jsonObject, '"}');
+                    jsonObject = strConcat(jsonObject, '}');
                 } else {
-                    jsonObject = strConcat(jsonObject, '"},');
+                    jsonObject = strConcat(jsonObject, '},');
                 }
-            }
-
-            jsonObject = strConcat(jsonObject, "]");
+            }            
         }
+
+        jsonObject = strConcat(jsonObject, "]");
 
         return jsonObject;
     }
