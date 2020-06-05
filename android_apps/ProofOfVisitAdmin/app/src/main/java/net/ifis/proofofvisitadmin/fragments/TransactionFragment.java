@@ -57,6 +57,11 @@ public class TransactionFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
+                receiverAddress.setText("Transaction pending...");
+
+                continueBtn.setEnabled(false);
+                abortBtn.setEnabled(false);
+
                 // WEB3J TRANSACTION !!!
                 try {
                     String pw = MainActivity.walletManager.decrypt(MainActivity.sharedPref.getString(SharedPref.SHAREDPREFERENCES_WALLET_PASSWORD));
