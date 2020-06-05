@@ -47,7 +47,7 @@ public class LocationSettingsFragment extends Fragment {
         findViewById(view);
 
         if(MainActivity.walletManager.isDirectoryEmpty()) {
-            
+
             setAllInvisible();
 
         } else {
