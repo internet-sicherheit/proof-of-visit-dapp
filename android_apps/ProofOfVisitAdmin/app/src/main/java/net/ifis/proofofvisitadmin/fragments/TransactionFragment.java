@@ -29,9 +29,10 @@ import java.io.IOException;
 
 public class TransactionFragment extends Fragment {
 
-    TextView transactionTextview;
-    Button continueBtn;
-    Button abortBtn;
+    private TextView receiverAddress;
+    private TextView transactionTextview;
+    private Button continueBtn;
+    private Button abortBtn;
 
     @Override
     public View onCreateView(
@@ -46,10 +47,11 @@ public class TransactionFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         transactionTextview = view.findViewById(R.id.transactionTextview);
+        receiverAddress = view.findViewById(R.id.receiverAddress);
         continueBtn = view.findViewById(R.id.continueBtn);
         abortBtn = view.findViewById(R.id.abortBtn);
 
-        transactionTextview.setText(transactionTextview.getText() + MainActivity.sharedPref.getString(SharedPref.SHAREDPREFERENCES_RECEIVING_ADDRESS));
+        receiverAddress.setText(MainActivity.sharedPref.getString(SharedPref.SHAREDPREFERENCES_RECEIVING_ADDRESS));
 
         continueBtn.setOnClickListener(new View.OnClickListener() {
             @Override

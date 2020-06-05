@@ -22,6 +22,10 @@ import net.ifis.proofofvisitadmin.activities.MainActivity;
 import net.ifis.proofofvisitadmin.constants.SharedPref;
 import net.ifis.proofofvisitadmin.network.RequestBergsAmount;
 
+import org.web3j.crypto.CipherException;
+import org.web3j.crypto.Credentials;
+
+import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
 public class InformationFragment extends Fragment {
@@ -67,11 +71,17 @@ public class InformationFragment extends Fragment {
 
             // bergs abfragen
             try {
-                String bergsAmount = (String) new RequestBergsAmount(MainActivity.credentials).execute(MainActivity.sharedPref.getString(SharedPref.SHAREDPREFERENCES_WALLET_ADDRESS)).get();
+                String pw = MainActivity.walletManager.decrypt(MainActivity.sharedPref.getString(SharedPref.SHAREDPREFERENCES_WALLET_PASSWORD));
+                Credentials credentials = MainActivity.walletManager.loadWallet(pw, MainActivity.sharedPref.getString(SharedPref.SHAREDPREFERENCES_WALLET_ADDRESS));
+                String bergsAmount = (String) new RequestBergsAmount(credentials).execute(MainActivity.sharedPref.getString(SharedPref.SHAREDPREFERENCES_WALLET_ADDRESS)).get();
                 bergs.setText(bergsAmount);
             } catch (ExecutionException e) {
                 e.printStackTrace();
             } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (CipherException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 

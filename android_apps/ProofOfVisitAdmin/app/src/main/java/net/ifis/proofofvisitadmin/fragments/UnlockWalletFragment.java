@@ -1,7 +1,6 @@
 package net.ifis.proofofvisitadmin.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +39,7 @@ public class UnlockWalletFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        walletAddressTv = view.findViewById(R.id.walletAddressTv);
+        walletAddressTv = view.findViewById(R.id.transactionTextview);
         pwInputText = view.findViewById(R.id.pwInputText);
         unlockBtn = view.findViewById(R.id.unlockBtn);
 

@@ -30,7 +30,6 @@ import java.io.IOException;
 public class MainActivity extends AppCompatActivity {
 
     public static SharedPref sharedPref;
-    public static SharedPreferences.Editor editor;
     public static WalletManager walletManager;
     public static Credentials credentials;
 

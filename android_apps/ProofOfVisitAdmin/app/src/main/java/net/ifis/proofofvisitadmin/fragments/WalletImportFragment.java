@@ -1,6 +1,5 @@
 package net.ifis.proofofvisitadmin.fragments;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,8 +10,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-
-import com.kenai.jffi.Main;
 
 import net.ifis.proofofvisitadmin.R;
 import net.ifis.proofofvisitadmin.activities.MainActivity;
@@ -37,7 +34,7 @@ public class WalletImportFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         infoTv = view.findViewById(R.id.infoTv);
-        walletAddressTv = view.findViewById(R.id.walletAddressTv);
+        walletAddressTv = view.findViewById(R.id.transactionTextview);
 
         MainActivity.walletManager = new WalletManager(getContext());
 

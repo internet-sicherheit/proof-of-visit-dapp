@@ -8,40 +8,51 @@
     tools:context=".fragments.TransactionFragment">
 
     <TextView
-        android:id="@+id/walletAddressTv"
+        android:id="@+id/transactionTextview"
         android:layout_width="300dp"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:text="@string/text_transaction"
         android:textAlignment="center"
         android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/receiverAddress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/receiverAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/transactionTextview" />
 
     <Button
         android:id="@+id/continueBtn"
         style="@style/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginTop="32dp"
         android:text="@string/btn_continue"
         app:layout_constraintEnd_toStartOf="@+id/abortBtn"
-        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/transactionTextview" />
+        app:layout_constraintTop_toBottomOf="@+id/receiverAddress" />
 
     <Button
         android:id="@+id/abortBtn"
         style="@style/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="32dp"
         android:text="@string/btn_abort"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/continueBtn"
-        app:layout_constraintTop_toBottomOf="@+id/transactionTextview" />
+        app:layout_constraintTop_toBottomOf="@+id/receiverAddress" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
