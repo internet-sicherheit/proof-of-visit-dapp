@@ -3,6 +3,7 @@ package net.ifis.proofofvisitadmin.fragments;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,9 @@ import com.kenai.jffi.Main;
 import net.ifis.proofofvisitadmin.R;
 import net.ifis.proofofvisitadmin.activities.MainActivity;
 import net.ifis.proofofvisitadmin.constants.SharedPref;
+import net.ifis.proofofvisitadmin.network.RequestBergsAmount;
+
+import java.util.concurrent.ExecutionException;
 
 public class InformationFragment extends Fragment {
 
@@ -62,7 +66,14 @@ public class InformationFragment extends Fragment {
             tokenSymbol.setText(MainActivity.sharedPref.getString(SharedPref.SHAREDPREFERENCES_TOKEN_SYMBOL));
 
             // bergs abfragen
-            bergs.setText("NA");
+            try {
+                String bergsAmount = (String) new RequestBergsAmount(MainActivity.credentials).execute(MainActivity.sharedPref.getString(SharedPref.SHAREDPREFERENCES_WALLET_ADDRESS)).get();
+                bergs.setText(bergsAmount);
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
         } else {
             setAllInvisible();

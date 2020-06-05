@@ -17,6 +17,12 @@ import androidx.navigation.fragment.NavHostFragment;
 import net.ifis.proofofvisitadmin.R;
 import net.ifis.proofofvisitadmin.activities.MainActivity;
 import net.ifis.proofofvisitadmin.constants.SharedPref;
+import net.ifis.proofofvisitadmin.network.CreateLocation;
+
+import org.web3j.crypto.CipherException;
+import org.web3j.crypto.Credentials;
+
+import java.io.IOException;
 
 public class LocationSettingsFragment extends Fragment {
 
@@ -78,6 +84,17 @@ public class LocationSettingsFragment extends Fragment {
                     /*WalletImportFragment walletImportFragment = new WalletImportFragment();
                     FragmentManager fragmentManager = getParentFragmentManager();
                     fragmentManager.beginTransaction().replace(R.id.screen_area, walletImportFragment).commit();*/
+
+                    try {
+                        String pw = MainActivity.walletManager.decrypt(MainActivity.sharedPref.getString(SharedPref.SHAREDPREFERENCES_WALLET_PASSWORD));
+                        Credentials credentials = MainActivity.walletManager.loadWallet(pw, MainActivity.sharedPref.getString(SharedPref.SHAREDPREFERENCES_WALLET_ADDRESS));
+                        new CreateLocation(credentials).execute(tokenName, tokenSymbol, locationName, MainActivity.sharedPref.getString(SharedPref.SHAREDPREFERENCES_WALLET_ADDRESS));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (CipherException e) {
+                        e.printStackTrace();
+                    }
+
 
                     Toast.makeText(getContext(), "Location saved.", Toast.LENGTH_SHORT).show();
 

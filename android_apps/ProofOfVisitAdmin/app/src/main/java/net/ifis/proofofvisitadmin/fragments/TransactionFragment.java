@@ -19,6 +19,13 @@ import com.kenai.jffi.Main;
 import net.ifis.proofofvisitadmin.R;
 import net.ifis.proofofvisitadmin.activities.MainActivity;
 import net.ifis.proofofvisitadmin.constants.SharedPref;
+import net.ifis.proofofvisitadmin.model.WalletManager;
+import net.ifis.proofofvisitadmin.network.RequestToken;
+
+import org.web3j.crypto.CipherException;
+import org.web3j.crypto.Credentials;
+
+import java.io.IOException;
 
 public class TransactionFragment extends Fragment {
 
@@ -49,6 +56,15 @@ public class TransactionFragment extends Fragment {
             public void onClick(View v) {
 
                 // WEB3J TRANSACTION !!!
+                try {
+                    String pw = MainActivity.walletManager.decrypt(MainActivity.sharedPref.getString(SharedPref.SHAREDPREFERENCES_WALLET_PASSWORD));
+                    Credentials credentials = MainActivity.walletManager.loadWallet(pw, MainActivity.sharedPref.getString(SharedPref.SHAREDPREFERENCES_WALLET_ADDRESS));
+                    new RequestToken(credentials).execute(MainActivity.sharedPref.getString(SharedPref.SHAREDPREFERENCES_WALLET_ADDRESS),MainActivity.sharedPref.getString(SharedPref.SHAREDPREFERENCES_RECEIVING_ADDRESS));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (CipherException e) {
+                    e.printStackTrace();
+                }
 
                 InformationFragment informationFragment = new InformationFragment();
                 FragmentManager fragmentManager = getParentFragmentManager();

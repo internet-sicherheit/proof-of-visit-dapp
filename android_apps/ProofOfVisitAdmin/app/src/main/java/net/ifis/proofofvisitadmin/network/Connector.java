@@ -1,5 +1,9 @@
 package net.ifis.proofofvisitadmin.network;
+
 import android.os.AsyncTask;
+
+import net.ifis.proofofvisitadmin.contract.POVToken;
+
 import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.http.HttpService;
@@ -30,6 +34,10 @@ public class Connector extends AsyncTask {
 
     public POVToken getContract() {
         return this.contract;
+    }
+
+    public Web3j getWeb3j() {
+        return this.web3j;
     }
 
     @Override
