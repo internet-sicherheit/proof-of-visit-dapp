@@ -12,7 +12,7 @@ import java.math.BigInteger;
 
 public class Connector extends AsyncTask {
 
-    private final String CONTRACTADDRESS = "0xa1Ed4D58D6a4c38b917DfEfB8DC625ee43ABE3d6";
+    private final String CONTRACTADDRESS = "0x568a86D9aAbDb00a6bbB87BCF7873d28759c0356";
     /*private final BigInteger GASPRICE = BigInteger.valueOf(22000);
     private final BigInteger GASLIMIT = BigInteger.valueOf(4300000);*/
     private final String URL = "https://core.bloxberg.org/";
