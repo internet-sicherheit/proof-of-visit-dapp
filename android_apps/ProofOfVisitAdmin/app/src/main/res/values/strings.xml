@@ -14,7 +14,8 @@
     <string name="tv_tokensymbol">Tokensymbol</string>
     <string name="tv_bergs">Bergs</string>
     <string name="tv_location_address">Locationaddress</string>
-    <string name="tv_information_no_values">To view information, import a wallet\nand set location settings.</string>
+    <string name="tv_information_no_values">To view Information, import a wallet\nand set location settings.</string>
+    <string name="tv_camera_no_values">To use camera, import a wallet\nand set location settings.</string>
     <string name="hint_enter_pw">Enter password</string>
     <string name="hint_locatoinname">Enter locationname</string>
     <string name="hint_tokenname">Enter tokenname</string>

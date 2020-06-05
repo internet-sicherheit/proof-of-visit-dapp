@@ -14,6 +14,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.kenai.jffi.Main;
+
 import net.ifis.proofofvisitadmin.R;
 import net.ifis.proofofvisitadmin.activities.MainActivity;
 import net.ifis.proofofvisitadmin.constants.SharedPref;
@@ -50,11 +52,7 @@ public class InformationFragment extends Fragment {
 
         findViewsById(view);
 
-        if(!MainActivity.sharedPref.getString(SharedPref.SHAREDPREFERENCES_WALLET_ADDRESS).equals(SharedPref.SHAREDPREFERENCES_DEFAULT_VALUE)
-           && !MainActivity.sharedPref.getString(SharedPref.SHAREDPREFERENCES_WALLET_PASSWORD).equals(SharedPref.SHAREDPREFERENCES_DEFAULT_VALUE)
-           && !MainActivity.sharedPref.getString(SharedPref.SHAREDPREFERENCES_LOCATION_NANME).equals(SharedPref.SHAREDPREFERENCES_DEFAULT_VALUE)
-           && !MainActivity.sharedPref.getString(SharedPref.SHAREDPREFERENCES_TOKEN_NAME).equals(SharedPref.SHAREDPREFERENCES_DEFAULT_VALUE)
-           && !MainActivity.sharedPref.getString(SharedPref.SHAREDPREFERENCES_TOKEN_SYMBOL).equals(SharedPref.SHAREDPREFERENCES_DEFAULT_VALUE)) {
+        if(MainActivity.isAllInformationAvailable()) {
 
             infoTv.setVisibility(View.INVISIBLE);
 

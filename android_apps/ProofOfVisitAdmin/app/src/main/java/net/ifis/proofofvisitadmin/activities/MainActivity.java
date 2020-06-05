@@ -57,34 +57,55 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void loadInformationFragment() {
+        InformationFragment informationFragment = new InformationFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.screen_area, informationFragment).commit();
+    }
+
+    public void loadFaucetBergsFragment() {
+        FaucetBergsFragment faucetBergsFragment = new FaucetBergsFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.screen_area, faucetBergsFragment).commit();
+    }
+
+    public void loadLocationSettingsFragment() {
+        LocationSettingsFragment locationSettingsFragment = new LocationSettingsFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.screen_area, locationSettingsFragment).commit();
+    }
+
+    public void loadWalletImport() {
+        WalletImportFragment walletImportFragment = new WalletImportFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.screen_area, walletImportFragment).commit();
+    }
+
+    public void loadScanQRCodeFragment() {
+        ScanQRCodeFragment scanQRCodeFragment = new ScanQRCodeFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.screen_area, scanQRCodeFragment).commit();
+    }
+
+    public static boolean isAllInformationAvailable() {
+
+        boolean isAllInformationAvailable = false;
+
+        if (!MainActivity.sharedPref.getString(SharedPref.SHAREDPREFERENCES_WALLET_ADDRESS).equals(SharedPref.SHAREDPREFERENCES_DEFAULT_VALUE)
+                && !MainActivity.sharedPref.getString(SharedPref.SHAREDPREFERENCES_WALLET_PASSWORD).equals(SharedPref.SHAREDPREFERENCES_DEFAULT_VALUE)
+                && !MainActivity.sharedPref.getString(SharedPref.SHAREDPREFERENCES_LOCATION_NANME).equals(SharedPref.SHAREDPREFERENCES_DEFAULT_VALUE)
+                && !MainActivity.sharedPref.getString(SharedPref.SHAREDPREFERENCES_TOKEN_NAME).equals(SharedPref.SHAREDPREFERENCES_DEFAULT_VALUE)
+                && !MainActivity.sharedPref.getString(SharedPref.SHAREDPREFERENCES_TOKEN_SYMBOL).equals(SharedPref.SHAREDPREFERENCES_DEFAULT_VALUE)) {
+            isAllInformationAvailable = true;
+        }
+        return isAllInformationAvailable;
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        Log.d("life", "resume");
-
-        if(walletManager.isDirectoryEmpty()) {
-            sharedPref.add(SharedPref.SHAREDPREFERENCES_WALLET_ADDRESS, SharedPref.SHAREDPREFERENCES_DEFAULT_VALUE);
-            sharedPref.add(SharedPref.SHAREDPREFERENCES_WALLET_PASSWORD, SharedPref.SHAREDPREFERENCES_DEFAULT_VALUE);
-            sharedPref.add(SharedPref.SHAREDPREFERENCES_LOCATION_NANME, SharedPref.SHAREDPREFERENCES_DEFAULT_VALUE);
-            sharedPref.add(SharedPref.SHAREDPREFERENCES_TOKEN_NAME, SharedPref.SHAREDPREFERENCES_DEFAULT_VALUE);
-            sharedPref.add(SharedPref.SHAREDPREFERENCES_TOKEN_SYMBOL, SharedPref.SHAREDPREFERENCES_DEFAULT_VALUE);
-
-        }
-
-    }
-
-
-    @Override
-    public void onStop() {
-        super.onStop();
     }
 
     @Override
@@ -134,33 +155,26 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void loadInformationFragment() {
-        InformationFragment informationFragment = new InformationFragment();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.screen_area, informationFragment).commit();
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        Log.d("life", "resume");
+
+        if(walletManager.isDirectoryEmpty()) {
+            sharedPref.add(SharedPref.SHAREDPREFERENCES_WALLET_ADDRESS, SharedPref.SHAREDPREFERENCES_DEFAULT_VALUE);
+            sharedPref.add(SharedPref.SHAREDPREFERENCES_WALLET_PASSWORD, SharedPref.SHAREDPREFERENCES_DEFAULT_VALUE);
+            sharedPref.add(SharedPref.SHAREDPREFERENCES_LOCATION_NANME, SharedPref.SHAREDPREFERENCES_DEFAULT_VALUE);
+            sharedPref.add(SharedPref.SHAREDPREFERENCES_TOKEN_NAME, SharedPref.SHAREDPREFERENCES_DEFAULT_VALUE);
+            sharedPref.add(SharedPref.SHAREDPREFERENCES_TOKEN_SYMBOL, SharedPref.SHAREDPREFERENCES_DEFAULT_VALUE);
+
+        }
+
     }
 
-    public void loadFaucetBergsFragment() {
-        FaucetBergsFragment faucetBergsFragment = new FaucetBergsFragment();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.screen_area, faucetBergsFragment).commit();
-    }
 
-    public void loadLocationSettingsFragment() {
-        LocationSettingsFragment locationSettingsFragment = new LocationSettingsFragment();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.screen_area, locationSettingsFragment).commit();
-    }
-
-    public void loadWalletImport() {
-        WalletImportFragment walletImportFragment = new WalletImportFragment();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.screen_area, walletImportFragment).commit();
-    }
-
-    public void loadScanQRCodeFragment() {
-        ScanQRCodeFragment scanQRCodeFragment = new ScanQRCodeFragment();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.screen_area, scanQRCodeFragment).commit();
+    @Override
+    public void onStop() {
+        super.onStop();
     }
 }
