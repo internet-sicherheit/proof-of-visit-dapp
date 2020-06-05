@@ -40,7 +40,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     // My dependencies
-    implementation 'org.web3j:core:4.2.0-android'
+    implementation 'org.web3j:core:4.6.0-android'
     implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.3'
     //noinspection GradleCompatible
 /*    implementation 'com.madgag.spongycastle:prov:1.54.0.0'

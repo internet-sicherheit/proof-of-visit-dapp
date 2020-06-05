@@ -15,11 +15,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import net.ifis.proofofvisitclient.R;
+import net.ifis.proofofvisitclient.activities.MainActivity;
 import net.ifis.proofofvisitclient.adapter.Adapter;
 import net.ifis.proofofvisitclient.constants.AdapterMode;
 import net.ifis.proofofvisitclient.constants.SharedPref;
 import net.ifis.proofofvisitclient.model.Connector;
 import net.ifis.proofofvisitclient.model.TokenManager;
+import net.ifis.proofofvisitclient.network.UserTokenList;
 
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.methods.response.Web3ClientVersion;

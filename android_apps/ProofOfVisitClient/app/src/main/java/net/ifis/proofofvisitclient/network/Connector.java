@@ -1,0 +1,40 @@
+package net.ifis.proofofvisitclient.network;
+import android.os.AsyncTask;
+import net.ifis.proofofvisitclient.contract.POVToken;
+import org.web3j.crypto.Credentials;
+import org.web3j.protocol.Web3j;
+import org.web3j.protocol.http.HttpService;
+import org.web3j.tx.gas.DefaultGasProvider;
+import java.math.BigInteger;
+
+public class Connector extends AsyncTask {
+
+    private final String CONTRACTADDRESS = "0xa1Ed4D58D6a4c38b917DfEfB8DC625ee43ABE3d6";
+    /*private final BigInteger GASPRICE = BigInteger.valueOf(22000);
+    private final BigInteger GASLIMIT = BigInteger.valueOf(4300000);*/
+    private final String URL = "https://core.bloxberg.org/";
+    private Web3j web3j;
+    private Credentials credentials;
+    private POVToken contract;
+
+    public Connector(Credentials credentials) {
+
+        this.credentials = credentials;
+
+        try {
+            this.web3j = Web3j.build(new HttpService(URL));
+            this.contract = POVToken.load(this.CONTRACTADDRESS, this.web3j, this.credentials, new DefaultGasProvider());
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public POVToken getContract() {
+        return this.contract;
+    }
+
+    @Override
+    protected Object doInBackground(Object[] objects) {
+        return null;
+    }
+}
