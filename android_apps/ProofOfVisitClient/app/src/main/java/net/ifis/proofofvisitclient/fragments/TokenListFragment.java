@@ -1,6 +1,7 @@
 package net.ifis.proofofvisitclient.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,6 +57,8 @@ public class TokenListFragment extends Fragment {
                 String pw = MainActivity.walletManager.decrypt(sharedPref.getString(SharedPref.SHAREDPREFERENCES_WALLET_PASSWORD));
                 Credentials credentials = MainActivity.walletManager.loadWallet(pw, sharedPref.getString(SharedPref.SHAREDPREFERENCES_WALLET_ADDRESS));
                 String jsonTokenList = (String) new UserTokenList(credentials).execute(sharedPref.getString(SharedPref.SHAREDPREFERENCES_WALLET_ADDRESS)).get();
+
+                Log.d("tokenlist", jsonTokenList);
 
                 // json string parsen
                 tokenManager = new TokenManager(jsonTokenList);
