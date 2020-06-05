@@ -12,16 +12,27 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import net.ifis.proofofvisitadmin.R;
+import net.ifis.proofofvisitadmin.constants.SharedPref;
 import net.ifis.proofofvisitadmin.fragments.FaucetBergsFragment;
 import net.ifis.proofofvisitadmin.fragments.InformationFragment;
 import net.ifis.proofofvisitadmin.fragments.LocationSettingsFragment;
 import net.ifis.proofofvisitadmin.fragments.ScanQRCodeFragment;
+import net.ifis.proofofvisitadmin.fragments.UnlockWalletFragment;
 import net.ifis.proofofvisitadmin.fragments.WalletImportFragment;
+import net.ifis.proofofvisitadmin.model.WalletManager;
+
+import org.web3j.crypto.CipherException;
+import org.web3j.crypto.Credentials;
+import org.web3j.crypto.Wallet;
+
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static SharedPreferences pref;
+    public static SharedPref sharedPref;
     public static SharedPreferences.Editor editor;
+    public static WalletManager walletManager;
+    public static Credentials credentials;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,10 +41,20 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
-        editor = pref.edit();
+        walletManager = new WalletManager(getApplicationContext());
+        sharedPref = new SharedPref(getApplicationContext().getSharedPreferences(SharedPref.SHAREDPREFERENCES_FILENAME, 0));
 
         loadInformationFragment();
+
+        if(!sharedPref.getString(SharedPref.SHAREDPREFERENCES_WALLET_PASSWORD).equals(SharedPref.SHAREDPREFERENCES_DEFAULT_VALUE)) {
+            try {
+                walletManager.loadWallet(walletManager.decrypt(sharedPref.getString(SharedPref.SHAREDPREFERENCES_WALLET_PASSWORD)),sharedPref.getString(SharedPref.SHAREDPREFERENCES_WALLET_ADDRESS));
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (CipherException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -41,6 +62,25 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        Log.d("life", "resume");
+
+        if(walletManager.isDirectoryEmpty()) {
+            sharedPref.add(SharedPref.SHAREDPREFERENCES_WALLET_ADDRESS, SharedPref.SHAREDPREFERENCES_DEFAULT_VALUE);
+            sharedPref.add(SharedPref.SHAREDPREFERENCES_WALLET_PASSWORD, SharedPref.SHAREDPREFERENCES_DEFAULT_VALUE);
+        }
+
+    }
+
+
+    @Override
+    public void onStop() {
+        super.onStop();
     }
 
     @Override

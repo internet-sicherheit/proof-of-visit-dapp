@@ -7,9 +7,12 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.fragment.NavHostFragment;
 
 import net.ifis.proofofvisitadmin.R;
+import net.ifis.proofofvisitadmin.activities.MainActivity;
+import net.ifis.proofofvisitadmin.constants.SharedPref;
 
 public class InformationFragment extends Fragment {
 
@@ -24,6 +27,7 @@ public class InformationFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
 
 
     }

@@ -18,6 +18,7 @@ import com.kenai.jffi.Main;
 
 import net.ifis.proofofvisitadmin.R;
 import net.ifis.proofofvisitadmin.activities.MainActivity;
+import net.ifis.proofofvisitadmin.constants.SharedPref;
 
 public class TransactionFragment extends Fragment {
 
@@ -41,7 +42,7 @@ public class TransactionFragment extends Fragment {
         continueBtn = view.findViewById(R.id.continueBtn);
         abortBtn = view.findViewById(R.id.abortBtn);
 
-        transactionTextview.setText(transactionTextview.getText() + MainActivity.pref.getString("qrcode", "undefined"));
+        transactionTextview.setText(transactionTextview.getText() + MainActivity.sharedPref.getString(SharedPref.SHAREDPREFERENCES_RECEIVING_ADDRESS));
 
         continueBtn.setOnClickListener(new View.OnClickListener() {
             @Override

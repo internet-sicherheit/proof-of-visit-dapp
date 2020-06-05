@@ -24,6 +24,7 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import net.ifis.proofofvisitadmin.R;
 import net.ifis.proofofvisitadmin.activities.MainActivity;
+import net.ifis.proofofvisitadmin.constants.SharedPref;
 
 import java.io.IOException;
 
@@ -94,8 +95,7 @@ public class ScanQRCodeFragment extends Fragment {
                             Vibrator vibrator = (Vibrator)getContext().getSystemService(Context.VIBRATOR_SERVICE);
                             vibrator.vibrate(1000);
 
-                            MainActivity.editor.putString("qrcode", qrCodes.valueAt(0).displayValue);
-                            MainActivity.editor.commit();
+                            MainActivity.sharedPref.add(SharedPref.SHAREDPREFERENCES_RECEIVING_ADDRESS, qrCodes.valueAt(0).displayValue);
 
                             TransactionFragment transactionFragment = new TransactionFragment();
                             FragmentManager fragmentManager = getParentFragmentManager();

@@ -8,7 +8,7 @@
     tools:context=".fragments.LocationSettingsFragment">
 
     <TextView
-        android:id="@+id/transactionTextview"
+        android:id="@+id/walletAddressTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/text_location_settings"
