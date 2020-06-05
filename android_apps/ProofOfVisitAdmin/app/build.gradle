@@ -41,7 +41,7 @@ dependencies {
 
     // My dependencies
     // web3j
-    implementation 'org.web3j:core:4.2.0-android'
+    implementation 'org.web3j:core:4.6.0-android'
     // qrcode scanner
     implementation 'com.google.android.gms:play-services-vision:15.0.0'
 }
