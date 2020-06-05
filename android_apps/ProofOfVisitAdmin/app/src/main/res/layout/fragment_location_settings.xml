@@ -7,14 +7,109 @@
     android:layout_height="match_parent"
     tools:context=".fragments.LocationSettingsFragment">
 
-    <TextView
-        android:id="@+id/walletAddressTv"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/topGuideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/text_location_settings"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.2" />
+
+    <TextView
+        android:id="@+id/locationNameTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tv_locationname"
+        app:layout_constraintBottom_toTopOf="@+id/tokenNameTv"
+        app:layout_constraintEnd_toStartOf="@+id/locationNameInput"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/topGuideline" />
+
+    <EditText
+        android:id="@+id/locationNameInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/hint_locatoinname"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/tokenNameInput"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/locationNameTv"
+        app:layout_constraintTop_toTopOf="@+id/topGuideline" />
+
+    <TextView
+        android:id="@+id/tokenNameTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tv_tokenname"
+        app:layout_constraintBottom_toTopOf="@+id/tokenSymbolTv"
+        app:layout_constraintEnd_toStartOf="@+id/tokenNameInput"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/locationNameTv" />
+
+    <EditText
+        android:id="@+id/tokenNameInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/hint_tokenname"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/tokenSymbolInput"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tokenNameTv"
+        app:layout_constraintTop_toBottomOf="@+id/locationNameInput" />
+
+    <TextView
+        android:id="@+id/tokenSymbolTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tv_tokensymbol"
+        app:layout_constraintBottom_toTopOf="@+id/bottomGuideline"
+        app:layout_constraintEnd_toStartOf="@+id/tokenSymbolInput"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tokenNameTv" />
+
+    <EditText
+        android:id="@+id/tokenSymbolInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/hint_tokensymbol"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/bottomGuideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tokenSymbolTv"
+        app:layout_constraintTop_toBottomOf="@+id/tokenNameInput" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/bottomGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.72" />
+
+    <Button
+        android:id="@+id/saveBtn"
+        style="@style/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_save"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/bottomGuideline" />
+
+    <TextView
+        android:id="@+id/infoTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tv_location_settings_no_wallet"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

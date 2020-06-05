@@ -9,6 +9,9 @@ public class SharedPref {
     public static final String SHAREDPREFERENCES_WALLET_ADDRESS = "wallet_address";
     public static final String SHAREDPREFERENCES_WALLET_PASSWORD = "wallet_password";
     public static final String SHAREDPREFERENCES_RECEIVING_ADDRESS = "receiving_address";
+    public static final String SHAREDPREFERENCES_LOCATION_NANME = "location_name";
+    public static final String SHAREDPREFERENCES_TOKEN_NAME = "token_name";
+    public static final String SHAREDPREFERENCES_TOKEN_SYMBOL = "token_symbol";
 
     private SharedPreferences sharedPref;
 

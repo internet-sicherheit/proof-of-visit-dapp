@@ -8,8 +8,16 @@
     <string name="text_transaction">Really want to start the transaction for address:\n\n</string>
     <string name="text_wallet_address">Wallet address:</string>
     <string name="tv_no_wallet">No wallet file detected.</string>
+    <string name="tv_location_settings_no_wallet">Import wallet file first.</string>
+    <string name="tv_locationname">locationname</string>
+    <string name="tv_tokenname">tokenname</string>
+    <string name="tv_tokensymbol">tokensymbol</string>
     <string name="hint_enter_pw">Enter password</string>
+    <string name="hint_locatoinname">Enter locationname</string>
+    <string name="hint_tokenname">Enter tokenname</string>
+    <string name="hint_tokensymbol">Enter tokensymbol</string>
     <string name="btn_continue">Continue</string>
     <string name="btn_unlock">Unlock</string>
     <string name="btn_abort">Abort</string>
+    <string name="btn_save">Save</string>
 </resources>
