@@ -7,11 +7,151 @@
     android:layout_height="match_parent"
     tools:context=".fragments.InformationFragment">
 
-    <TextView
-        android:id="@+id/walletAddressTv"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/topGuideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/text_information"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.15" />
+
+    <TextView
+        android:id="@+id/locationAddressTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tv_location_address"
+        app:layout_constraintBottom_toTopOf="@+id/locationAddress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/topGuideline" />
+
+    <TextView
+        android:id="@+id/locationAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/middleGuideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/locationAddressTv"
+        tools:text="TextView" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/middleGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.3" />
+
+    <TextView
+        android:id="@+id/bergsTv"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="@string/tv_bergs"
+        app:layout_constraintBottom_toTopOf="@+id/locationNameTv"
+        app:layout_constraintEnd_toStartOf="@+id/bergs"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/middleGuideline" />
+
+    <TextView
+        android:id="@+id/bergs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/locationName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/bergsTv"
+        app:layout_constraintTop_toTopOf="@+id/middleGuideline"
+        tools:text="TextView" />
+
+    <TextView
+        android:id="@+id/locationNameTv"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="@string/tv_locationname"
+        app:layout_constraintBottom_toTopOf="@+id/tokenNameTv"
+        app:layout_constraintEnd_toStartOf="@+id/locationName"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bergsTv" />
+
+    <TextView
+        android:id="@+id/locationName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/tokenName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/locationNameTv"
+        app:layout_constraintTop_toBottomOf="@+id/bergs"
+        tools:text="TextView" />
+
+    <TextView
+        android:id="@+id/tokenNameTv"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="@string/tv_tokenname"
+        app:layout_constraintBottom_toTopOf="@+id/tokenSymbolTv"
+        app:layout_constraintEnd_toStartOf="@+id/tokenName"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/locationNameTv" />
+
+    <TextView
+        android:id="@+id/tokenName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/tokenSymbol"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tokenNameTv"
+        app:layout_constraintTop_toBottomOf="@+id/locationName"
+        tools:text="TextView" />
+
+    <TextView
+        android:id="@+id/tokenSymbolTv"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="@string/tv_tokensymbol"
+        app:layout_constraintBottom_toTopOf="@+id/bottomGuideline"
+        app:layout_constraintEnd_toStartOf="@+id/tokenSymbol"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tokenNameTv" />
+
+    <TextView
+        android:id="@+id/tokenSymbol"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/bottomGuideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tokenSymbolTv"
+        app:layout_constraintTop_toBottomOf="@+id/tokenName"
+        tools:text="TextView" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/bottomGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.7" />
+
+    <Button
+        android:id="@+id/copyAddressBtn"
+        style="@style/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_coply_address"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/bottomGuideline" />
+
+    <TextView
+        android:id="@+id/infoTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tv_information_no_values"
+        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

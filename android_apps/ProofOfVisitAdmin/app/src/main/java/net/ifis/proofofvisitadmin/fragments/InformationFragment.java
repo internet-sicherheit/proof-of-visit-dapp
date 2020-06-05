@@ -1,20 +1,40 @@
 package net.ifis.proofofvisitadmin.fragments;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.navigation.fragment.NavHostFragment;
 
 import net.ifis.proofofvisitadmin.R;
 import net.ifis.proofofvisitadmin.activities.MainActivity;
 import net.ifis.proofofvisitadmin.constants.SharedPref;
 
 public class InformationFragment extends Fragment {
+
+    private TextView infoTv;
+
+    private TextView locationAddressTv;
+    private TextView locationAddress;
+
+    private TextView bergsTv;
+    private TextView bergs;
+    private TextView locationNameTv;
+    private TextView locationName;
+    private TextView tokenNameTv;
+    private TextView tokenName;
+    private TextView tokenSymbolTv;
+    private TextView tokenSymbol;
+
+    private Button copyAddressBtn;
 
     @Override
     public View onCreateView(
@@ -28,7 +48,73 @@ public class InformationFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        findViewsById(view);
 
+        if(!MainActivity.sharedPref.getString(SharedPref.SHAREDPREFERENCES_WALLET_ADDRESS).equals(SharedPref.SHAREDPREFERENCES_DEFAULT_VALUE)
+           && !MainActivity.sharedPref.getString(SharedPref.SHAREDPREFERENCES_WALLET_PASSWORD).equals(SharedPref.SHAREDPREFERENCES_DEFAULT_VALUE)
+           && !MainActivity.sharedPref.getString(SharedPref.SHAREDPREFERENCES_LOCATION_NANME).equals(SharedPref.SHAREDPREFERENCES_DEFAULT_VALUE)
+           && !MainActivity.sharedPref.getString(SharedPref.SHAREDPREFERENCES_TOKEN_NAME).equals(SharedPref.SHAREDPREFERENCES_DEFAULT_VALUE)
+           && !MainActivity.sharedPref.getString(SharedPref.SHAREDPREFERENCES_TOKEN_SYMBOL).equals(SharedPref.SHAREDPREFERENCES_DEFAULT_VALUE)) {
 
+            infoTv.setVisibility(View.INVISIBLE);
+
+            locationAddress.setText(MainActivity.sharedPref.getString(SharedPref.SHAREDPREFERENCES_WALLET_ADDRESS));
+            locationName.setText(MainActivity.sharedPref.getString(SharedPref.SHAREDPREFERENCES_LOCATION_NANME));
+            tokenName.setText(MainActivity.sharedPref.getString(SharedPref.SHAREDPREFERENCES_TOKEN_NAME));
+            tokenSymbol.setText(MainActivity.sharedPref.getString(SharedPref.SHAREDPREFERENCES_TOKEN_SYMBOL));
+
+            // bergs abfragen
+            bergs.setText("NA");
+
+        } else {
+            setAllInvisible();
+        }
+
+        copyAddressBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("wallet_address", locationAddress.getText().toString());
+                clipboard.setPrimaryClip(clip);
+
+                Toast.makeText(getContext(), "Address copied to clipboard.", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    private void findViewsById(View view) {
+
+        infoTv = view.findViewById(R.id.infoTv);
+
+        locationAddressTv = view.findViewById(R.id.locationAddressTv);
+        locationAddress = view.findViewById(R.id.locationAddress);
+
+        bergsTv = view.findViewById(R.id.bergsTv);
+        bergs = view.findViewById(R.id.bergs);
+        locationNameTv = view.findViewById(R.id.locationNameTv);
+        locationName = view.findViewById(R.id.locationName);
+        tokenNameTv = view.findViewById(R.id.tokenNameTv);
+        tokenName = view.findViewById(R.id.tokenName);
+        tokenSymbolTv = view.findViewById(R.id.tokenSymbolTv);
+        tokenSymbol = view.findViewById(R.id.tokenSymbol);
+
+        copyAddressBtn = view.findViewById(R.id.copyAddressBtn);
+    }
+
+    private void setAllInvisible() {
+        locationAddressTv.setVisibility(View.INVISIBLE);
+        locationAddress.setVisibility(View.INVISIBLE);
+
+        bergsTv.setVisibility(View.INVISIBLE);
+        bergs.setVisibility(View.INVISIBLE);
+        locationNameTv.setVisibility(View.INVISIBLE);
+        locationName.setVisibility(View.INVISIBLE);
+        tokenNameTv.setVisibility(View.INVISIBLE);
+        tokenName.setVisibility(View.INVISIBLE);
+        tokenSymbolTv.setVisibility(View.INVISIBLE);
+        tokenSymbol.setVisibility(View.INVISIBLE);
+
+        copyAddressBtn.setVisibility(View.INVISIBLE);
     }
 }

@@ -73,6 +73,10 @@ public class MainActivity extends AppCompatActivity {
         if(walletManager.isDirectoryEmpty()) {
             sharedPref.add(SharedPref.SHAREDPREFERENCES_WALLET_ADDRESS, SharedPref.SHAREDPREFERENCES_DEFAULT_VALUE);
             sharedPref.add(SharedPref.SHAREDPREFERENCES_WALLET_PASSWORD, SharedPref.SHAREDPREFERENCES_DEFAULT_VALUE);
+            sharedPref.add(SharedPref.SHAREDPREFERENCES_LOCATION_NANME, SharedPref.SHAREDPREFERENCES_DEFAULT_VALUE);
+            sharedPref.add(SharedPref.SHAREDPREFERENCES_TOKEN_NAME, SharedPref.SHAREDPREFERENCES_DEFAULT_VALUE);
+            sharedPref.add(SharedPref.SHAREDPREFERENCES_TOKEN_SYMBOL, SharedPref.SHAREDPREFERENCES_DEFAULT_VALUE);
+
         }
 
     }
