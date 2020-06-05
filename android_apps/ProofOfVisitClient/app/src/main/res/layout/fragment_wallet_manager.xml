@@ -7,49 +7,35 @@
     android:layout_height="match_parent"
     tools:context=".fragments.WalletManagerFragment">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineTop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.10" />
-
     <ImageButton
         android:id="@+id/plusImgBtn"
         android:layout_width="50dp"
-        android:layout_height="0dp"
-        android:backgroundTint="@android:color/white"
+        android:layout_height="50dp"
+        android:layout_marginEnd="64dp"
+        android:backgroundTint="@android:color/transparent"
         android:scaleType="centerInside"
         android:src="@drawable/plus"
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toStartOf="@+id/minusImgBtn"
         app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guidelineTop" />
+        app:layout_constraintTop_toBottomOf="@+id/placeholder" />
 
     <ImageButton
         android:id="@+id/minusImgBtn"
         android:layout_width="50dp"
-        android:layout_height="0dp"
-        android:backgroundTint="@android:color/white"
+        android:layout_height="50dp"
+        android:backgroundTint="@android:color/transparent"
         android:fadeScrollbars="false"
         android:filterTouchesWhenObscured="false"
         android:isScrollContainer="false"
         android:keepScreenOn="false"
         android:scaleType="centerInside"
         android:src="@drawable/minus"
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/plusImgBtn"
-        app:layout_constraintTop_toTopOf="@+id/guidelineTop" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.15" />
+        app:layout_constraintTop_toBottomOf="@+id/placeholder" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -57,17 +43,27 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline" />
+        app:layout_constraintTop_toBottomOf="@+id/plusImgBtn"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/wallet_manager_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/tv_wallet_manager"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/recyclerView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline" />
+        app:layout_constraintTop_toBottomOf="@+id/placeholder" />
+
+    <TextView
+        android:id="@+id/placeholder"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
