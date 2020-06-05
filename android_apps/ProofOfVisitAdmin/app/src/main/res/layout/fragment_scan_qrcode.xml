@@ -15,16 +15,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/scannerCrossfade"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:src="@drawable/scanner_crossfade"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/camerapreview"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/placeholder" />
-
     <SurfaceView
         android:id="@+id/camerapreview"
         android:layout_width="0dp"
@@ -44,5 +34,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/scannerCrossfade"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/scanner_crossfade"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/camerapreview"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/placeholder" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
