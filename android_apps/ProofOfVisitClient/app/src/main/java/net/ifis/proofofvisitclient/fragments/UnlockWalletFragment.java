@@ -62,7 +62,7 @@ public class UnlockWalletFragment extends Fragment {
                     MainActivity.walletManager.loadWallet(password, selectedWalletAddress);
                     walletItemView.setVisibility(View.VISIBLE);
                     sharedPref.add(SharedPref.SHAREDPREFERENCES_WALLET_ADDRESS, selectedWalletAddress);
-                    // encrypted pw speichern
+                    sharedPref.add(SharedPref.SHAREDPREFERENCES_WALLET_PASSWORD, MainActivity.walletManager.encrypt(password));
 
                 } catch (IOException ioe) {
                     Toast.makeText(getContext(), "Walletfile not found.", Toast.LENGTH_SHORT).show();

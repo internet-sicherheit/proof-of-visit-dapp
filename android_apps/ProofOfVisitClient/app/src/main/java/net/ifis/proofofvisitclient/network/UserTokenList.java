@@ -3,6 +3,7 @@ import net.ifis.proofofvisitclient.activities.MainActivity;
 import net.ifis.proofofvisitclient.constants.SharedPref;
 
 import org.web3j.crypto.Credentials;
+import org.web3j.protocol.core.RemoteFunctionCall;
 
 public class UserTokenList extends Connector {
 
@@ -12,11 +13,16 @@ public class UserTokenList extends Connector {
 
     @Override
     protected Object doInBackground(Object[] objects) {
+
+        String walletAddress = (String) objects[0];
+
+        String jsonTokenList = null;
+
         try {
-            getContract().getUserTokenlist(MainActivity.sharedPref.getString(SharedPref.SHAREDPREFERENCES_WALLET_ADDRESS)).send();
+            jsonTokenList = getContract().getUserTokenlist(walletAddress).send();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return jsonTokenList;
     }
 }
