@@ -116,7 +116,7 @@ public class ScanQRCodeFragment extends Fragment {
             });
         } else {
             surfaceView.setVisibility(View.INVISIBLE);
-            //textView.setVisibility(View.INVISIBLE);
+            scannerCrossfade.setVisibility(View.INVISIBLE);
         }
     }
 }
