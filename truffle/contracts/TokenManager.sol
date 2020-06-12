@@ -1,13 +1,8 @@
 pragma solidity ^0.5.16;
 
 
-
 contract TokenManager {
-    
-
-    constructor() public {
-        
-    }
+    constructor() public {}
 
     //Struct for a Location that wants to give out POV Tokens
     struct Location {
@@ -15,12 +10,14 @@ contract TokenManager {
         string tokensymbol;
         string locationname;
         address locationaddress;
+        uint256 hoursBetweenRequests;
     }
 
     //Struct data for all POV-Tokens in existence
     struct PovToken {
         string locationname;
         address locationaddress;
+        uint256 timestampCreated;
     }
 
     //Storage for all Locations
@@ -123,21 +120,20 @@ contract TokenManager {
         string calldata _tokenname,
         string calldata _tokensymbol,
         string calldata _locationname,
-        address _locationWalletAddress
+        address _locationWalletAddress,
+        uint256 _hoursBetweenRequest
     ) external returns (uint256) {
         bool locationExists = false;
         bool locationnameExists = false;
         bool tokennameExists = false;
         bool tokensymbolExists = false;
 
-        //keccak256 is for comparing strings
+        ///checks if any of the given paramters are already in use
         for (uint256 i = 0; i < locations.length; i++) {
             if (locationaddresses[i] == _locationWalletAddress) {
                 locationExists = true;
             }
-            if (
-                compareStrings(locations[i].locationname, _locationname)
-            ) {
+            if (compareStrings(locations[i].locationname, _locationname)) {
                 locationnameExists = true;
             }
             if (compareStrings(locations[i].tokenname, _tokenname)) {
@@ -160,7 +156,8 @@ contract TokenManager {
                 tokenname: _tokenname,
                 tokensymbol: _tokensymbol,
                 locationname: _locationname,
-                locationaddress: _locationWalletAddress
+                locationaddress: _locationWalletAddress,
+                hoursBetweenRequests: _hoursBetweenRequest
             });
 
             //adds the location to the location array
@@ -181,10 +178,12 @@ contract TokenManager {
     function requestToken(address _locationaddress, address _requestaddress)
         external
     {
+
         PovToken memory _newpovtoken = PovToken({
             locationname: locations[ownerAddressToLocationIndex[_locationaddress]]
                 .locationname,
-            locationaddress: _locationaddress
+            locationaddress: _locationaddress,
+            timestampCreated: block.timestamp
         });
 
         //safes token to public manager array
@@ -208,9 +207,9 @@ contract TokenManager {
 
         for (uint256 i = 0; i < povtokens.length; i++) {
             if (tokenIndexToOwnerAddress[i] == useraddress) {
-                 jsonObject = strConcat(jsonObject, "{");
+                jsonObject = strConcat(jsonObject, "{");
 
-                 jsonObject = strConcat(jsonObject, '"locationaddress":"');
+                jsonObject = strConcat(jsonObject, '"locationaddress":"');
                 jsonObject = strConcat(
                     jsonObject,
                     addressToString(getLocationAddressFromId(i))
@@ -247,10 +246,17 @@ contract TokenManager {
 
     //Helperfunctions __________________________________________________________________________________________
 
-    function compareStrings(string memory _a, string memory _b) private pure returns (bool) {
-        return (keccak256(abi.encodePacked((_a))) == keccak256(abi.encodePacked((_b))) );
+    //compares 2 strings
+    function compareStrings(string memory _a, string memory _b)
+        private
+        pure
+        returns (bool)
+    {
+        return (keccak256(abi.encodePacked((_a))) ==
+            keccak256(abi.encodePacked((_b))));
     }
 
+    //appends a string to another string
     function strConcat(string memory s1, string memory s2)
         public
         pure
@@ -259,6 +265,7 @@ contract TokenManager {
         return string(abi.encodePacked(s1, s2));
     }
 
+    //https://ethereum.stackexchange.com/a/8447
     function addressToString(address x) public pure returns (string memory) {
         bytes memory s = new bytes(42);
         s[0] = "0";
@@ -278,6 +285,7 @@ contract TokenManager {
         else return bytes1(uint8(b) + 0x57);
     }
 
+    //converts an int to string
     function int2str(uint256 _i)
         internal
         pure
@@ -301,7 +309,6 @@ contract TokenManager {
         return string(bstr);
     }
 }
-   
 
 
 contract ERC721 {
